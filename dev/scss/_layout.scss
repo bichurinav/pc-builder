@@ -1,0 +1,47 @@
+$theme: #1e88e5;
+$container: 1170px;
+$font: '';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: #222;
+    font-family: sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: $theme;
+    color: #fff;
+    height: 30px;
+    padding: 0 25px;
+    border-radius: 50px;
+    box-shadow: 1px 4px 0 #1976d2;
+    transition: all .2s;
+    &:hover {
+        opacity: .8;
+    }
+}
+
+.container {
+    width: $container;
+    margin: 0 auto;
+    @media (max-width: $container) {
+        padding: 0 15px;
+        width: 100%;
+    }
+}

@@ -1,0 +1,12 @@
+.catalog {
+    display: flex;
+    justify-content: space-between;
+    &-menu {
+        flex-basis: 19%;
+        box-shadow: 0 1px 4px silver;
+    }
+    &-content {
+        flex-basis: 79%;
+        box-shadow: 0 1px 4px silver;
+    }
+}

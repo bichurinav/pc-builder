@@ -33,7 +33,6 @@ function server() {
     });
     browserSync.watch(paths.php).on('change', browserSync.reload)
     browserSync.watch(paths.js.src + '**/*.js', parallel(js)).on('change', browserSync.reload)
-    browserSync.watch(paths.css.src, parallel(css)).on('change', browserSync.reload);
 }
 
 function css() {
@@ -62,4 +61,8 @@ function js() {
         .pipe(dest(paths.js.dest))
 }
 
-exports.default = parallel(server, css, js)
+function watchCss() {
+    watch(paths.css.src, css);
+}
+
+exports.default = parallel(server, css, js, watchCss)
