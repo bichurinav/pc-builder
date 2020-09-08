@@ -8,6 +8,8 @@
 </head>
 <body>
     <div class="page">
+        <!-- catalog-menu -->
+        <?include COMPONENT . 'admin.php'?>
         <header class="page__header header">
             
         </header>

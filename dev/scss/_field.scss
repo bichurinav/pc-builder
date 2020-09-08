@@ -1,0 +1,28 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    position: relative;
+    &__title {
+        position: absolute;
+        top: 0%;
+        color: $theme;
+        transform: translateY(-50%);
+        left: 10px;
+        background: #fff;
+        padding: 0 3px;
+        z-index: 1;
+        font-size: 14px;
+        cursor: text;
+        transition: all .25s;
+    }
+    &__input {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid $theme;
+        outline: none;
+        &:focus {
+            box-shadow: 0 0 1px $theme;
+        }
+    }
+}
