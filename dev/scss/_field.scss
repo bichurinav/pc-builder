@@ -4,25 +4,48 @@
     margin-top: 12px;
     position: relative;
     &__title {
-        position: absolute;
-        top: 0%;
-        color: $theme;
-        transform: translateY(-50%);
-        left: 10px;
-        background: #fff;
-        padding: 0 3px;
-        z-index: 1;
         font-size: 14px;
         cursor: text;
         transition: all .25s;
     }
     &__input {
         padding: 8px 12px;
-        border-radius: 10px;
-        border: 1px solid $theme;
         outline: none;
-        &:focus {
-            box-shadow: 0 0 1px $theme;
+    }
+    &.rounded {
+        .field__title {
+            position: absolute;
+            transform: translateY(-50%);
+            top: 0%;
+            color: $theme;
+            left: 10px;
+            background: #fff;
+            padding: 0 3px;
+            z-index: 1;
+        }
+        .field__input {
+            border: 1px solid $theme;
+            border-radius: 10px;
+            &::placeholder {
+                opacity: 0;
+            }
+            &:focus {
+                box-shadow: 0 0 5px $theme;
+            }
+        }
+    }
+    &.line {
+        margin-top: 8px;
+        .field__title {
+            display: none;
+        }
+        .field__input {
+            padding: 8px 2px;
+            border: none;
+            border-bottom: 1px solid $theme;
+            &::placeholder {
+                color: $theme;
+            }
         }
     }
 }

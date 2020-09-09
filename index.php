@@ -10,6 +10,6 @@ if ($_SERVER['REQUEST_URI'] == "/") {
     <!-- catalog-menu -->
     <?include COMPONENT . 'catalog.menu.php'?>
     <!-- catalog-components -->
-    <?include COMPONENT . 'catalog.items.php'?>
+    <div class="catalog-content"></div>
 </div>
 <?include TEMPLATE_PATH . 'footer.php'?>
