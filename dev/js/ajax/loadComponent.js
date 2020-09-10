@@ -14,7 +14,7 @@ export function loadComponent(action, url) {
     req.then(data => data.json()).then(data => {
         const catalog = document.querySelector('.catalog-content')
         catalog.innerHTML = '';
-
+        console.log(data);
         if (!data) {
             catalog.innerHTML = "<b>Пусто :(</b>"
             return

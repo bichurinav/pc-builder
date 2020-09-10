@@ -1,3 +1,4 @@
+<?session_start()?>
 <?require $_SERVER['DOCUMENT_ROOT'] . '/modules/database.php';?>
 <?
 if ($_SERVER['REQUEST_URI'] == "/") {

@@ -6,9 +6,15 @@ export function addComponent(action, form, url) {
         body
     })
     req.then(data => data.text()).then(data => {
+        const fields = document.querySelectorAll('.field input');
+        fields.forEach(el => {
+            el.value = '';
+        })
         if (!data) {
-            return    
+            return
         }
-        document.location.href = `/?component=${data}`;
+        setTimeout(() => {
+            document.location.href = `/?component=${data}`;
+        }, 0);
     })
 }

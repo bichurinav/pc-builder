@@ -6,21 +6,27 @@
                 <h3 class="form-add-component__title">
                     <!-- Добавление компонента -->
                 </h3>
-                <form class="form-add-component__form" method="POST" action="/modules/Component.php">
-                    <select class="select" name="component" id="">
+                <form class="form-add-component__form">
+                    <select id="addComponentSelect" class="select" name="component" id="">
                         <?foreach($arrComponentList as $key => $item):?>
-                            <option value="<?=$key?>"><?=$item['name']?></option>
+                            <?if($key === $_GET['component']):?>
+                                <option value="<?=$key?>" selected><?=$item['name']?></option>
+                            <?else:?>
+                                <option value="<?=$key?>"><?=$item['name']?></option>
+                            <?endif?>
                         <?endforeach?>
                     </select>
-                    <label class="field line" for="field_1">
-                        <span class="field__title">Название</span>
-                        <input id="field_1" class="field__input" name="name" placeholder="Название" type="name">
-                    </label>
-                    <label class="field line" for="field_2">
-                        <span class="field__title">Цена</span>
-                        <input id="field_2" class="field__input" name="price" placeholder="Цена" type="number">
-                    </label>
-                    <button class="btn form-add-component__btn">Добавить компонент</button>
+                    <div class="form-add-component__body">
+                        <?$fields = $arrComponentList[$_GET['component']]['params'];?>
+                        <?foreach($fields as $name => $field):?>
+                            <label class="field line" for="field_<?=$name?>">
+                                <span class="field__title"><?=$field['title']?></span>
+                                <input id="field_<?=$name?>" class="field__input"
+                                 name="<?=$name?>" placeholder="<?=$field['title']?>" type="<?=$field['type']?>">
+                        </label>
+                        <?endforeach?>
+                        <button class="btn form-add-component__btn">Добавить <?=$arrComponentList[$_GET['component']]['genetive']?></button>
+                    </div>
                 </form>
             </div>
         </div>
