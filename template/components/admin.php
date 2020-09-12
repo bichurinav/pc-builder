@@ -23,6 +23,7 @@
                                 <span class="field__title"><?=$field['title']?></span>
                                 <input id="field_<?=$name?>" class="field__input"
                                  name="<?=$name?>" placeholder="<?=$field['title']?>" type="<?=$field['type']?>">
+                                 <span class="field__error">введите значение</span>
                         </label>
                         <?endforeach?>
                         <div class="upload-file">

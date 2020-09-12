@@ -20,7 +20,7 @@ $arrComponentList = array(
                 'type' => 'text'
             ),
             'Цена' => array(
-                'title' => 'Прайс',
+                'title' => 'Цена',
                 'type' => 'text'
             ),
             'Частота' => array(

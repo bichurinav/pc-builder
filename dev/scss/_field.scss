@@ -12,6 +12,15 @@
         padding: 8px 12px;
         outline: none;
     }
+    &__error {
+        color: #ff3131;
+        font-size: 14px;
+        margin: 1px 0;
+        display: none;
+    }
+    .error {
+        display: block;
+    }
     &.rounded {
         .field__title {
             position: absolute;
