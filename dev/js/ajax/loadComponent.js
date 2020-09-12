@@ -14,17 +14,29 @@ export function loadComponent(action, url) {
     req.then(data => data.json()).then(data => {
         const catalog = document.querySelector('.catalog-content')
         catalog.innerHTML = '';
-        console.log(data);
         if (!data) {
             catalog.innerHTML = "<b>Пусто :(</b>"
             return
         }
 
-        data['items'].forEach(item => {
+        data['items'].forEach((item, index, arr) => {
+            let params = []
+            for (let key in item) {
+                if (key !== 'name' && key !== 'id' && key !== 'image') {
+
+                    params.push(`<span><b>${key.replaceAll('_', ' ')}</b>: ${item[key]}</span><br>`);
+                }
+            }
             catalog.innerHTML += `
             <div class="catalog-content__item">
-                <b>${item['name']}:</b>
-                <span>${item['price']} руб.</span>
+                <h2>${item['name']}</h2>
+                <br>
+                <div>
+                    ${params.join('')}
+                </div>
+                <div>
+                    <img width="300" src="${item['image']}">
+                </div>
             </div>
             `
         })

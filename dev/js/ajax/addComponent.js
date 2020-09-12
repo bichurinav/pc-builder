@@ -7,12 +7,15 @@ export function addComponent(action, form, url) {
     })
     req.then(data => data.text()).then(data => {
         const fields = document.querySelectorAll('.field input');
+        
         fields.forEach(el => {
             el.value = '';
         })
+        console.log(data);
         if (!data) {
             return
         }
+        
         setTimeout(() => {
             document.location.href = `/?component=${data}`;
         }, 0);

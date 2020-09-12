@@ -7,7 +7,7 @@ define('DB', array(
     'user' => 'root',
     'password' => ''
 ));
-define('TEMPLATE_PATH', $_SERVER['DOCUMENT_ROOT'] . '/template/');
+define('TEMPLATE_PATH', './template/');
 define('COMPONENT', TEMPLATE_PATH. 'components/');
 
 $arrComponentList = array(
@@ -19,13 +19,25 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
-                'title' => 'Цена',
+            'Цена' => array(
+                'title' => 'Прайс',
+                'type' => 'text'
+            ),
+            'Частота' => array(
+                'title' => 'Частота',
+                'type' => 'text'
+            ),
+            'Количество ядер' => array(
+                'title' => 'Количество ядер',
                 'type' => 'number'
             ),
-            'ghz' => array(
-                'title' => 'Частота',
-                'type' => 'number'
+            'Гнездо процессора' => array(
+                'title' => 'Гнездо процессора',
+                'type' => 'text'
+            ),
+            'Поддержка частот памяти' => array(
+                'title' => 'Поддержка частот памяти',
+                'type' => 'text'
             )
         )
     ),
@@ -37,7 +49,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),
