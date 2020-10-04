@@ -9,7 +9,11 @@
 <body>
     <div class="page">
         <!-- catalog-menu -->
-        <?include COMPONENT . 'admin.php'?>
+        <?
+            if ($_SESSION['admin']) {
+                include COMPONENT . 'admin.php';
+            }
+        ?>
         <header class="page__header header">
             
         </header>

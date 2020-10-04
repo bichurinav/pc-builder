@@ -6,8 +6,8 @@
                 <h3 class="form-add-component__title">
                     <!-- Добавление компонента -->
                 </h3>
-                <form class="form-add-component__form">
-                    <select id="addComponentSelect" class="select" name="component" id="">
+                <form id="form-add-component" class="form-add-component__form">
+                    <select id="form-add-component-select" class="select" name="component" id="">
                         <?foreach($arrComponentList as $key => $item):?>
                             <?if($key === $_GET['component']):?>
                                 <option value="<?=$key?>" selected><?=$item['name']?></option>
@@ -24,11 +24,11 @@
                                 <input id="field_<?=$name?>" class="field__input"
                                  name="<?=$name?>" placeholder="<?=$field['title']?>" type="<?=$field['type']?>">
                                  <span class="field__error">введите значение</span>
-                        </label>
+                            </label>
                         <?endforeach?>
                         <div class="upload-file">
-                            <input type="file" name="image" id="upload-file__input" class="upload-file__input" accept="image/jpeg,image/png,image/gif">
-                            <label class="upload-file__label" for="upload-file__input">
+                            <input type="file" name="image" id="form-add-component-upload" class="upload-file__input" accept="image/jpeg,image/png,image/gif">
+                            <label class="upload-file__label" for="form-add-component-upload">
                                 <img class="upload-file__icon" src="<?=TEMPLATE_PATH . 'images/picture_icon.svg'?>" alt="">
                                 <span class="upload-file__text">Изображение</span>
                             </label>

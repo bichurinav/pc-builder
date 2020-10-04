@@ -140,5 +140,3 @@ $arrComponentList = array(
         )
     ),
 );
-
-$_SESSION['components'] = $arrComponentList;
