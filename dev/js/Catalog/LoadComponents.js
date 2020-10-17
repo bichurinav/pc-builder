@@ -1,19 +1,25 @@
-class LoadComponents {
+import Events from 'events'
+
+class LoadComponents extends Events {
     constructor() {
+        super()
         this.catalogContent = document.querySelector('.catalog-content');
         if (!this.catalogContent) {
             throw new Error('Не найден .catalog-content');
         }
-        this.showComponents = 4;
+        this.showComponents = 6;
         this.countComponents = 0;
         this.offset = 0;
         this.components = [];
         this.action = 'load';
         this.ajaxURL = 'modules/Component.php';
+        this.imagesPath = 'template/images';
         this.loadComponentFromDB(this.action, this.ajaxURL, this.offset)
+        
+        this.on('utils', (params) => {
+            this.utils = params
+        })
     }
-
-
 
     loadComponentFromDB(action, url, offset = 0) {
         let body = new FormData();
@@ -33,8 +39,6 @@ class LoadComponents {
                     }, 500)
                 });
     }
-
-
 
     /**
      * Рисует компоненты на странице
@@ -61,31 +65,69 @@ class LoadComponents {
         this.components.forEach((item) => {
             let params = []
             for (let key in item) {
-                if (key !== 'name' && key !== 'id' && key !== 'image') {
+                if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
                     params.push(`<span><b>${key.replaceAll('_', ' ')}</b>: ${item[key]}</span><br>`);
                 }
             }
+            const previewParams = params.filter((el, i) => i <= 2)
+
             this.catalog.innerHTML += `
-            <div class="catalog-content__item">
-                <div class="catalog-content__item-image">
+            <div class="card catalog-content__item">
+                <div class="card__img">
                     <img width="100" src="${item['image']}">
                 </div>
-                <div class="catalog-content__item-info">
-                    <h2>${item['name']}</h2>
-                    <div>
+                <div class="card__content">
+                    <h2 class="card__title">${item['name']}</h2>
+                    <div class="card__preview-props">
+                        ${previewParams.join('')}
+                        <button class="btn card__btn-more">Все характеристики</button>
+                    </div>
+                    <span class="card__price">&asymp; ${item['Цена']}</span>
+                </div>
+                <button class="btn card__btn-box">
+                    <img src="${this.imagesPath}/box.svg">
+                </button>
+                <div class="card__props">
+                    <div class="card__props-inner">
                         ${params.join('')}
+                        <button class="btn card__props-close">&#10006;</button>
                     </div>
                 </div>
             </div>
             `
         })
 
+        // PROPS
+        this.btnsProps = document.querySelectorAll('.card__btn-more');
+        this.btnsProps.forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                const blockProps = this.utils.findParent(btn, 'card').querySelector('.card__props');
+                blockProps.style.display = "block";
+
+                function closeProps(e) {                        
+                    let arrEls = e.path.filter(el => el instanceof HTMLElement);
+                    if (!e.target.classList.contains('card__btn-more')) {
+                        if (!arrEls.find(el => el.classList.contains('card__props-inner'))) {
+                            blockProps.style.display = "none";
+                        } else {
+                            if (e.target.classList.contains('card__props-close')) {
+                                blockProps.style.display = "none";
+                            }
+                        }
+                    }
+                }
+
+                const parentItem = this.utils.findParent(blockProps, 'catalog-content__item');
+                parentItem.addEventListener('click', closeProps)
+
+            })
+        })
+
         if (this.countComponents > this.showComponents) {
             this.setPagination();
         }
     }
-
-
 
     setPagination() {
 
@@ -143,8 +185,6 @@ class LoadComponents {
         })
     }
 
-
-
     setPreloader() {
         this.catalogContent.innerHTML = '';
         this.catalogContent.insertAdjacentHTML('afterbegin', `
@@ -161,16 +201,12 @@ class LoadComponents {
         `)
     }
 
-
-
     getParamURL(key) {
         let p = window.location.search;
         p = p.match(new RegExp(key + '=([^&=]+)'));
         return p ? p[1] : false;
     }
 
-
-    
 }
 
 export default LoadComponents;
