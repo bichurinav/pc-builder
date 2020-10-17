@@ -1,4 +1,5 @@
-$theme: #1e88e5;
+$theme: #2196F3;
+$shadow: #6dc0ff;
 $container: 1170px;
 $font: '';
 
@@ -24,18 +25,22 @@ ul {
 .btn {
     border: none;
     outline: none;
+    background: transparent;
     cursor: pointer;
-    background: $theme;
-    color: #fff;
-    height: 30px;
-    padding: 0 25px;
-    border-radius: 50px;
-    box-shadow: 1px 4px 0 #1976d2;
     transition: all .2s;
+    &_primary {
+        background: $theme;
+        color: #fff;
+        height: 30px;
+        padding: 0 25px;
+        border-radius: 50px;
+        box-shadow: 1px 4px 0 #1976d2;
+    }
     &:hover {
         opacity: .8;
     }
 }
+
 
 .container {
     width: $container;

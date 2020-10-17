@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_URI'] == "/") {
 ?>
 <?session_start()?>
 <?
-    $_SESSION['admin'] = true
+    $_SESSION['admin'] = false
 ?>
 <?require $_SERVER['DOCUMENT_ROOT'] . '/modules/database.php';?>
 <?include TEMPLATE_PATH . 'header.php'?>

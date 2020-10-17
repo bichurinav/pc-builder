@@ -1,0 +1,91 @@
+.card {
+    flex-basis: 49%;
+    display: flex;
+    height: 165px;
+    background: #fff;
+    box-shadow: 0 3px 5px rgb(212, 212, 212);
+    border-radius: 8px;
+    padding: 5px;
+    position: relative;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin-left: 10px;
+    }
+
+    &__title {
+        margin-bottom: 5px;
+    }
+
+    &__price {
+        position: absolute;
+        right: 25px;
+        bottom: 10px;
+        font-weight: bold;
+        color: #8b8b8b;
+    }
+
+    &__props {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #fff;
+        width: 70%;
+        box-shadow: 0px 0px 5px $shadow;
+        height: 90%;
+        padding: 5px;
+        overflow: auto;
+        &-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            position: relative;
+        }
+        &-close {
+            position: absolute;
+            right: 6px;
+            top: 5px;
+            color: $theme;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3px;
+            border: 2px solid $theme;
+            &:hover {
+                opacity: .5;
+            }
+        }
+    }
+
+    &__btn-box {
+        margin: 0 20px 0 auto;
+        align-self: center;
+        background: $theme;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 25px;
+        position: relative;
+        box-shadow: 0 0px 5px $theme;
+    }
+
+    &__btn-more {
+        color: $theme;
+        font-size: 14px;
+        height: 22px;
+        margin-top: 5px;
+        border: 1px solid $theme;
+        padding: 0 5px;
+        border-radius: 8px;
+        &:hover {
+            border: 1px solid #fff;
+        }
+    }
+}

@@ -1,16 +1,18 @@
 .catalog {
     display: flex;
+    position: relative;
     justify-content: space-between;
-    &-menu {
+    &_panelOpen {
+        left: 80px;
+    }
+    &__menu {
         flex-basis: 19%;
-        box-shadow: 0 1px 4px silver;
     }
     &-content {
         flex-basis: 79%;
         display: flex;
         min-height: 400px;
         flex-direction: column;
-        box-shadow: 0 1px 4px silver;
         &-items {
             display: flex;
             flex-wrap: wrap;
@@ -22,10 +24,7 @@
             justify-content: space-between;
         }
         &__item {
-            flex-basis: 49%;
-            display: flex;
             margin-bottom: 15px;
-            border: solid 1px rgb(252, 150, 150);
         }
     }
 }

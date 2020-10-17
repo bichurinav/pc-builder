@@ -1,7 +1,7 @@
-<div class="admin-panel">
+<div class="admin-panel admin-panel_active">
     <div class="container">
         <div class="admin-panel__inner">
-            <h1>Admin Panel</h1>
+            <div class="admin-panel__open">&#10006;</div>
             <div class="form-add-component">
                 <h3 class="form-add-component__title">
                     <!-- Добавление компонента -->
