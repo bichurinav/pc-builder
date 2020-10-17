@@ -1,0 +1,17 @@
+.menu {
+    align-self: flex-start;
+    
+    &__link {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 4px;
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 0 10px $shadow;
+        color: $theme;
+        &_active {
+            background: $theme;
+            color: #fff;
+        }
+    }
+}
