@@ -17,8 +17,25 @@ class AddComponent {
 
         this.fields = document.querySelectorAll('.form-add-component__form input')
         if (!this.formAddComponentUpload) {
-            throw new Error('Не были найдеы поля у формы');
+            throw new Error('Не были найдены поля у формы');
         }
+
+        this.adminPanel = document.querySelector('.admin-panel')
+        if (!this.adminPanel) {
+            throw new Error('Не были найден .admin-panel');
+        }
+
+        this.btnShow = document.querySelector('.admin-panel__open')
+        if (!this.btnShow ) {
+            throw new Error('Не были найден .admin-panel__open');
+        }
+
+        this.catalog = document.querySelector('.catalog');
+        if (!this.catalog) {
+            throw new Error('Не найден .catalog');
+        }
+
+        this.catalog.classList.add('catalog_panelOpen');
 
         this.ajaxURL = 'modules/Component.php';
         this.addEventListener();
@@ -108,6 +125,20 @@ class AddComponent {
             event,
             url: this.ajaxURL
         }));
+        // Показывает панель
+        this.btnShow.addEventListener('click', () => {
+            this.adminPanel.classList.toggle('admin-panel_active')
+            this.catalog.classList.toggle('catalog_panelOpen');
+            if (this.adminPanel.classList.contains('admin-panel_active')) {
+                this.btnShow.innerHTML = "&#10006;"
+                this.btnShow.style.fontSize = "16px"
+            } else {
+                this.btnShow.textContent = "+"
+                this.btnShow.style.fontSize = "28px"
+            }
+            
+        })
+        
         
     }
 }
