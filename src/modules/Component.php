@@ -1,5 +1,6 @@
 <?php
 require 'database.php';
+
 class Component
 {
     public $action;
@@ -22,7 +23,7 @@ class Component
 
 
     public function Add() {
-        
+
         // Проверяет значения на пустоту
         function checkEmptyVal($el) {
             return ($el) ? $el : null;
@@ -30,21 +31,21 @@ class Component
 
         $checkedParams = array_filter($this->params, "checkEmptyVal");
         if ($this->params === $checkedParams) {
-            
+
             // Выгружаем картинку в папку
             if ($_FILES) {
                 if (is_uploaded_file($_FILES['image']['tmp_name'])) {
                     $imageName = basename($_FILES['image']['name']);
-                    $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/template/images/$this->component/$imageName";
-                    $imageDir = $_SERVER['DOCUMENT_ROOT'] . "/template/images/$this->component";
-                    $image = "/template/images/$this->component/$imageName";
+                    $imagePath = "$this->imagesPath/$this->component/$imageName";
+                    $imageDir = "$this->imagesPath/$this->component";
+                    $image = "$this->imagesPath/$this->component/$imageName";
                     if (!is_dir($imageDir)) {
                         mkdir($imageDir);
                     }
                     move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
                 }
             }
-            
+
             $name = $this->params['name'];
             $this->params['Цена'] = $this->params['Цена'] . " ₽";
             unset($this->params['name']);
@@ -69,10 +70,11 @@ class Component
 
 
 
-    public function Load() {        
+    public function Load() {
+
         // Удаляем неиспользуемые изображения в папке
         function removeUnusedImages($component, $db) {
-            $arImagesFromDB = [];    
+            $arImagesFromDB = [];
             // Получаем все изображения из таблицы (база-данных)
             $query = "SELECT `image` from $component";
             if ($res = $db->query($query)) {
@@ -82,7 +84,8 @@ class Component
                 }
             }
             // Удаляем изображения, которые не совпадают с таблицей (база-данных)
-            $imagesPath = $_SERVER['DOCUMENT_ROOT'] . "/template/images/$component";
+            $src = $_SERVER['DOCUMENT_ROOT'];
+            $imagesPath = "$src/images/$component";
             foreach (scandir($imagesPath) as $img) {
                 if ($img != '.' && $img != '..') {
                     if (!in_array($img, $arImagesFromDB)) {
@@ -93,7 +96,7 @@ class Component
         }
 
         removeUnusedImages($this->component, $this->DB);
-        
+
         if ($output_components = $this->DB->query("SELECT * FROM `$this->component` LIMIT $this->limit OFFSET $this->offset")) {
             while($row = $output_components->fetch_assoc()) {
                 $arResult = json_decode($row['params'], true);
@@ -105,14 +108,14 @@ class Component
             }
             // Кол-во элементов в таблице (база-данных)
             $countRow = $this->DB->query("SELECT COUNT(*) FROM `$this->component`");
-            $data['count'] = mysqli_fetch_array($countRow)[0];  
+            $data['count'] = mysqli_fetch_array($countRow)[0];
             // Отправляем на клиент сформированные компоненты и кол-во элементов в таблице (база-данных)
             echo ($data['items'] && $data['count']) ? json_encode($data) : json_encode(false);
         }
     }
 
 
-    
+
 }
 
 $component = new Component($_POST, $mysqli);

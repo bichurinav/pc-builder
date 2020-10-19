@@ -13,12 +13,13 @@ class LoadComponents extends Events {
         this.components = [];
         this.action = 'load';
         this.ajaxURL = 'modules/Component.php';
-        this.imagesPath = 'template/images';
+        this.imagesPath = 'images';
         this.loadComponentFromDB(this.action, this.ajaxURL, this.offset)
-        
+
         this.on('utils', (params) => {
             this.utils = params
         })
+
     }
 
     loadComponentFromDB(action, url, offset = 0) {
@@ -31,8 +32,10 @@ class LoadComponents extends Events {
             method: 'POST',
             body
         })
+
         this.setPreloader();
             req.then(data => data.json())
+
                 .then(data => {
                     setTimeout(() => {
                         this.render(data)
@@ -69,6 +72,7 @@ class LoadComponents extends Events {
                     params.push(`<span><b>${key.replaceAll('_', ' ')}</b>: ${item[key]}</span><br>`);
                 }
             }
+
             const previewParams = params.filter((el, i) => i <= 2)
 
             this.catalog.innerHTML += `
@@ -82,7 +86,9 @@ class LoadComponents extends Events {
                         ${previewParams.join('')}
                         <button class="btn card__btn-more">Все характеристики</button>
                     </div>
-                    <span class="card__price">&asymp; ${item['Цена']}</span>
+                    <span class="card__price">
+                        &asymp; ${this.utils.changeFormatPrice(item['Цена'])}
+                    </span>
                 </div>
                 <button class="btn card__btn-box">
                     <img src="${this.imagesPath}/box.svg">
@@ -105,7 +111,7 @@ class LoadComponents extends Events {
                 const blockProps = this.utils.findParent(btn, 'card').querySelector('.card__props');
                 blockProps.style.display = "block";
 
-                function closeProps(e) {                        
+                function closeProps(e) {
                     let arrEls = e.path.filter(el => el instanceof HTMLElement);
                     if (!e.target.classList.contains('card__btn-more')) {
                         if (!arrEls.find(el => el.classList.contains('card__props-inner'))) {
@@ -159,19 +165,19 @@ class LoadComponents extends Events {
         const paginationBtns = pagination.querySelectorAll('.catalog-pagination__btn');
         paginationBtns.forEach((btn) => {
             btn.addEventListener('click', () => {
-                
+
                 let getComponents = move => {
                     btn.setAttribute('offset', Number(localStorage.getItem(move)) * this.showComponents - this.showComponents)
                     this.offset = btn.getAttribute('offset');
                     this.loadComponentFromDB(this.action, this.ajaxURL, this.offset)
                 }
-    
+
                 if (btn.classList.contains('next')) {
                     if (localStorage.getItem('page') < lastPage(this.countComponents , this.showComponents)) {
                         localStorage.setItem('page', Number(localStorage.getItem('page')) + 1)
                     } else {
                         localStorage.setItem('page', 1)
-                    } 
+                    }
                 } else {
                     if (localStorage.getItem('page') == 1) {
                         localStorage.setItem('page', lastPage(this.countComponents , this.showComponents))
@@ -180,7 +186,7 @@ class LoadComponents extends Events {
                     }
                 }
                 getComponents('page');
-                 
+
             })
         })
     }

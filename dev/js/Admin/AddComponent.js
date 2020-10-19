@@ -37,18 +37,18 @@ class AddComponent {
 
         this.catalog.classList.add('catalog_panelOpen');
 
-        this.ajaxURL = 'modules/Component.php';
+        this.ajaxURL = '../modules/Component.php';
         this.addEventListener();
     }
 
 
-    
+
     changeComponent(event) {
         document.location.href = `/?component=${event.target.value}`;
     }
 
 
-    
+
     uploadImage(event) {
         let textSelector = document.querySelector('.upload-file__text');
         let file = event.target.files[0];
@@ -136,10 +136,10 @@ class AddComponent {
                 this.btnShow.textContent = "+"
                 this.btnShow.style.fontSize = "28px"
             }
-            
+
         })
-        
-        
+
+
     }
 }
 

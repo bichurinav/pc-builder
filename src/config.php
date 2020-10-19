@@ -7,8 +7,9 @@ define('DB', array(
     'user' => 'root',
     'password' => ''
 ));
-define('TEMPLATE_PATH', './template/');
-define('COMPONENT', TEMPLATE_PATH. 'components/');
+
+define('COMPONENT', 'components/');
+define('MODULES', 'modules/');
 
 $arrComponentList = array(
     'cpu' => array(

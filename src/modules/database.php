@@ -2,7 +2,7 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
 $mysqli = new mysqli(
-    DB['host'], 
+    DB['host'],
     DB['user'],
     DB['password'],
     DB['name']
