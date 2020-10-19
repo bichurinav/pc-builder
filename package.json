@@ -3,29 +3,36 @@
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
-  "browserslist": "> 0.25%, not dead",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "events": "^3.2.0",
     "gulp": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "babelify": "^10.0.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "autoprefixer": "^10.0.1",
+    "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.12",
-    "browserify": "^16.5.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-babel": "^8.0.0-beta.2",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^1.0.0",
     "node-sass": "^4.14.1",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "postcss": "^8.1.2",
+    "postcss-loader": "^4.0.4",
+    "sass-loader": "^10.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=development npx webpack --watch",
+    "build": "cross-env NODE_ENV=production npx webpack"
   },
   "repository": {
     "type": "git",

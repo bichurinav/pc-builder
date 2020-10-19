@@ -2,11 +2,9 @@
     <div class="container">
         <div class="admin-panel__inner">
             <div class="admin-panel__open">&#10006;</div>
+            <!-- ./admin-panel__open -->
             <div class="form-add-component">
-                <h3 class="form-add-component__title">
-                    <!-- Добавление компонента -->
-                </h3>
-                <form id="form-add-component" class="form-add-component__form">
+                <form id="form-add-component" class="form-add-component__form">  
                     <select id="form-add-component-select" class="select" name="component" id="">
                         <?foreach($arrComponentList as $key => $item):?>
                             <?if($key === $_GET['component']):?>
@@ -16,6 +14,7 @@
                             <?endif?>
                         <?endforeach?>
                     </select>
+                    <!-- ./select-component -->
                     <div class="form-add-component__body">
                         <?$fields = $arrComponentList[$_GET['component']]['params'];?>
                         <?foreach($fields as $name => $field):?>
@@ -33,11 +32,20 @@
                                 <span class="upload-file__text">Изображение</span>
                             </label>
                         </div>
-                        <button class="btn form-add-component__btn">Добавить <?=$arrComponentList[$_GET['component']]['genetive']?></button>
+                        <!-- ./upload-file (image) -->
+                        <button class="btn form-add-component__btn">
+                            Добавить <?=$arrComponentList[$_GET['component']]['genetive']?>
+                        </button>
+                        <!-- ./form-add-component__btn -->
                     </div>
-
+                    <!-- ./form-add-component__body -->
                 </form>
+                <!-- ./form-add-component__form -->
             </div>
+            <!-- ./form-add-component -->
         </div>
+        <!-- ./admin-panel__inner -->
     </div>
+    <!-- ./container -->
 </div>
+<!-- ./admin-panel -->

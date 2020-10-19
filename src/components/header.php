@@ -15,7 +15,7 @@
             }
         ?>
         <header class="page__header header">
-            
+
         </header>
         <main class="page__content content">
             <div class="content__container container">
