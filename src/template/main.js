@@ -10962,10 +10962,148 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Admin = function Admin() {
   _classCallCheck(this, Admin);
 
-  this.formAddComponent = new _AddComponent__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  new _AddComponent__WEBPACK_IMPORTED_MODULE_0__["default"]();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Admin);
+
+/***/ }),
+
+/***/ "./js/Catalog/Cards.js":
+/*!*****************************!*\
+  !*** ./js/Catalog/Cards.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
+/* harmony import */ var _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Pagination */ "./js/Catalog/Pagination.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+var Cards = /*#__PURE__*/function (_EventEmitter) {
+  _inherits(Cards, _EventEmitter);
+
+  var _super = _createSuper(Cards);
+
+  function Cards(options) {
+    var _this;
+
+    _classCallCheck(this, Cards);
+
+    _this = _super.call(this);
+    _this.$catalog = options.catalog;
+    _this.components = options.cards;
+    _this.count = options.count;
+    _this.show = options.show;
+    _this.imagesPath = options.imagesPath;
+    _this.pagination = new _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"]({
+      count: _this.count,
+      show: _this.show,
+      catalog: _this.$catalog
+    });
+    return _this;
+  }
+
+  _createClass(Cards, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      if (this.components) {
+        this.components = this.components.map(function (component, index) {
+          var params = [];
+
+          for (var key in component) {
+            if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
+              params.push("<div><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(component[key], "</div>"));
+            }
+          }
+
+          var previewParams = params.filter(function (el, i) {
+            return i <= 2;
+          });
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            <button class=\"btn card__props-close\">&#10006;</button>\n                        </div>\n                    </div>\n                </div>\n                ");
+        }).join('');
+      } else {
+        this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
+      }
+
+      this.$catalog.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\">\n                 ".concat(this.components, "\n            </div>\n        ")); // addEventListener - properties
+
+      this.btnsProps = document.querySelectorAll('.card__btn-more');
+      this.btnsProps.forEach(function (btn) {
+        btn.addEventListener('click', _this2.showProps.bind(_this2));
+      });
+
+      if (this.count > this.show) {
+        this.pagination.render();
+        this.pagination.on('getComponents', function (offset) {
+          return _this2.emit('getComponents', offset);
+        });
+      }
+    }
+  }, {
+    key: "showProps",
+    value: function showProps(event) {
+      var btn = event.target;
+      var blockProps = Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(btn, 'card').querySelector('.card__props');
+      blockProps.style.display = "block";
+      var card = Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(blockProps, 'catalog-content__item');
+      card.addEventListener('click', this.closeProps.bind(this, blockProps));
+    }
+  }, {
+    key: "closeProps",
+    value: function closeProps(blockProps, event) {
+      var arrEls = event.path.filter(function (el) {
+        return el instanceof HTMLElement;
+      });
+
+      if (!event.target.classList.contains('card__btn-more')) {
+        if (!arrEls.find(function (el) {
+          return el.classList.contains('card__props-inner');
+        })) {
+          blockProps.style.display = "none";
+        } else {
+          if (event.target.classList.contains('card__props-close')) {
+            blockProps.style.display = "none";
+          }
+        }
+      }
+    }
+  }]);
+
+  return Cards;
+}(events__WEBPACK_IMPORTED_MODULE_2___default.a);
+
+/* harmony default export */ __webpack_exports__["default"] = (Cards);
 
 /***/ }),
 
@@ -10978,61 +11116,104 @@ var Admin = function Admin() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _LoadComponents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LoadComponents */ "./js/Catalog/LoadComponents.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/* harmony import */ var _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/Catalog/Cards */ "./js/Catalog/Cards.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
 
 
-var Catalog = /*#__PURE__*/function (_Events) {
-  _inherits(Catalog, _Events);
 
-  var _super = _createSuper(Catalog);
-
-  function Catalog() {
-    var _this;
-
+var Catalog = /*#__PURE__*/function () {
+  function Catalog(selector, options) {
     _classCallCheck(this, Catalog);
 
-    _this = _super.call(this);
-    _this.loadComponents = new _LoadComponents__WEBPACK_IMPORTED_MODULE_1__["default"]();
-
-    _this.on('utils', function (params) {
-      _this.loadComponents.emit('utils', params);
-    });
-
-    return _this;
+    this.$el = document.querySelector(selector);
+    this.offset =  false || localStorage.getItem('page');
+    this.ajaxURL = options.ajaxURL;
+    this.showComponents = options.showComponents;
+    this.imagesPath = options.imagesPath;
+    this.delayData = 500;
+    this.optionsCards = {
+      catalog: this.$el,
+      imagesPath: this.imagesPath,
+      show: this.showComponents,
+      getComponents: this.getComponents
+    };
+    this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](this.optionsCards);
+    this.getComponents();
   }
 
+  _createClass(Catalog, [{
+    key: "getComponents",
+    value: function getComponents() {
+      var _this = this;
+
+      var body = new FormData();
+      body.append('action', 'load');
+      body.append('component', Object(_js_utils__WEBPACK_IMPORTED_MODULE_2__["getParamURL"])('component'));
+      body.append('offset', Number(this.offset));
+      body.append('limit', Number(this.showComponents));
+      this.preloader(true);
+      var req = fetch(this.ajaxURL, {
+        method: 'POST',
+        body: body
+      });
+      req.then(function (data) {
+        return data.json();
+      }).then(function (data) {
+        setTimeout(function () {
+          _this.preloader(false);
+
+          _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.optionsCards), {}, {
+            cards: data.items,
+            count: data.count
+          }));
+
+          _this.cards.render();
+
+          _this.cards.on('getComponents', _this.getComponents.bind(_this));
+        }, _this.delayData);
+      }).catch(function () {
+        _this.preloader(false);
+
+        _this.cards.render();
+      });
+    }
+  }, {
+    key: "preloader",
+    value: function preloader(flag) {
+      if (flag) {
+        this.$el.innerHTML = "\n            <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"margin: auto; display: block; shape-rendering: auto;\" width=\"197px\" height=\"197px\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid\">\n            <circle cx=\"50\" cy=\"50\" r=\"0\" fill=\"none\" stroke=\"#0051a2\" stroke-width=\"2\">\n            <animate attributeName=\"r\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"0;35\" keyTimes=\"0;1\" keySplines=\"0 0.2 0.8 1\" calcMode=\"spline\" begin=\"-0.6493506493506493s\"></animate>\n            <animate attributeName=\"opacity\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"1;0\" keyTimes=\"0;1\" keySplines=\"0.2 0 0.8 1\" calcMode=\"spline\" begin=\"-0.6493506493506493s\"></animate>\n            </circle>\n            <circle cx=\"50\" cy=\"50\" r=\"0\" fill=\"none\" stroke=\"#1b75be\" stroke-width=\"2\">\n            <animate attributeName=\"r\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"0;35\" keyTimes=\"0;1\" keySplines=\"0 0.2 0.8 1\" calcMode=\"spline\"></animate>\n            <animate attributeName=\"opacity\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"1;0\" keyTimes=\"0;1\" keySplines=\"0.2 0 0.8 1\" calcMode=\"spline\"></animate>\n            </circle>\n            </svg>\n        ";
+      } else {
+        this.$el.innerHTML = '';
+      }
+    }
+  }]);
+
   return Catalog;
-}(events__WEBPACK_IMPORTED_MODULE_0___default.a);
+}();
 
 /* harmony default export */ __webpack_exports__["default"] = (Catalog);
 
 /***/ }),
 
-/***/ "./js/Catalog/LoadComponents.js":
-/*!**************************************!*\
-  !*** ./js/Catalog/LoadComponents.js ***!
-  \**************************************/
+/***/ "./js/Catalog/Pagination.js":
+/*!**********************************!*\
+  !*** ./js/Catalog/Pagination.js ***!
+  \**********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11064,211 +11245,77 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var LoadComponents = /*#__PURE__*/function (_Events) {
-  _inherits(LoadComponents, _Events);
+var Pagination = /*#__PURE__*/function (_EventEmitter) {
+  _inherits(Pagination, _EventEmitter);
 
-  var _super = _createSuper(LoadComponents);
+  var _super = _createSuper(Pagination);
 
-  function LoadComponents() {
+  function Pagination(options) {
     var _this;
 
-    _classCallCheck(this, LoadComponents);
+    _classCallCheck(this, Pagination);
 
     _this = _super.call(this);
-    _this.catalogContent = document.querySelector('.catalog-content');
-
-    if (!_this.catalogContent) {
-      throw new Error('Не найден .catalog-content');
-    }
-
-    _this.showComponents = 6;
-    _this.countComponents = 0;
-    _this.offset = 0;
-    _this.components = [];
-    _this.action = 'load';
-    _this.ajaxURL = 'modules/Component.php';
-    _this.imagesPath = 'images';
-
-    _this.loadComponentFromDB(_this.action, _this.ajaxURL, _this.offset);
-
-    _this.on('utils', function (params) {
-      _this.utils = params;
-    });
-
+    _this.count = options.count;
+    _this.show = options.show;
+    _this.$catalog = options.catalog;
     return _this;
   }
 
-  _createClass(LoadComponents, [{
-    key: "loadComponentFromDB",
-    value: function loadComponentFromDB(action, url) {
+  _createClass(Pagination, [{
+    key: "render",
+    value: function render() {
       var _this2 = this;
 
-      var offset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-      var body = new FormData();
-      body.append('action', action);
-      body.append('component', this.getParamURL('component'));
-      body.append('offset', Number(offset));
-      body.append('limit', Number(this.showComponents));
-      var req = fetch(url, {
-        method: 'POST',
-        body: body
-      });
-      this.setPreloader();
-      req.then(function (data) {
-        return data.json();
-      }).then(function (data) {
-        setTimeout(function () {
-          _this2.render(data);
-        }, 500);
+      this.pagination = document.createElement('div');
+      this.pagination.classList.add('catalog-content-pagination');
+      this.pagination.insertAdjacentHTML('afterbegin', "\n            <button offset class=\"catalog-pagination__btn prev\">Prev page</button>\n            <span class=\"catalog-pagination__pages\">\n                ".concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(this.getLastPage(), "\n            </span>\n            <button offset class=\"catalog-pagination__btn next\">Next Page</button>\n        "));
+      this.$catalog.appendChild(this.pagination);
+      this.paginationButtons = this.pagination.querySelectorAll('.catalog-pagination__btn');
+      this.paginationButtons.forEach(function (btn) {
+        btn.addEventListener('click', _this2.changePage.bind(_this2));
       });
     }
-    /**
-     * Рисует компоненты на странице
-     * @param {{}} data - массив компонентов и число всех компонентов
-     */
-
   }, {
-    key: "render",
-    value: function render(data) {
-      var _this3 = this;
-
-      this.catalogContent.innerHTML = '';
-      this.catalogContent.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\"></div>\n        ");
-      this.components = data['items'];
-      this.countComponents = Number(data['count']);
-      this.catalog = document.querySelector('.catalog-content-items');
-
-      if (!this.catalog) {
-        throw new Error('Не найден .catalog-content-items');
-      }
-
-      if (!this.components) {
-        this.catalog.innerHTML = "<b>Пусто :(</b>";
-        return;
-      }
-
-      this.components.forEach(function (item) {
-        var params = [];
-
-        for (var key in item) {
-          if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
-            params.push("<span><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(item[key], "</span><br>"));
-          }
-        }
-
-        var previewParams = params.filter(function (el, i) {
-          return i <= 2;
-        });
-        _this3.catalog.innerHTML += "\n            <div class=\"card catalog-content__item\">\n                <div class=\"card__img\">\n                    <img width=\"100\" src=\"".concat(item['image'], "\">\n                </div>\n                <div class=\"card__content\">\n                    <h2 class=\"card__title\">").concat(item['name'], "</h2>\n                    <div class=\"card__preview-props\">\n                        ").concat(previewParams.join(''), "\n                        <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                    </div>\n                    <span class=\"card__price\">\n                        &asymp; ").concat(_this3.utils.changeFormatPrice(item['Цена']), "\n                    </span>\n                </div>\n                <button class=\"btn card__btn-box\">\n                    <img src=\"").concat(_this3.imagesPath, "/box.svg\">\n                </button>\n                <div class=\"card__props\">\n                    <div class=\"card__props-inner\">\n                        ").concat(params.join(''), "\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                </div>\n            </div>\n            ");
-      }); // PROPS
-
-      this.btnsProps = document.querySelectorAll('.card__btn-more');
-      this.btnsProps.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var blockProps = _this3.utils.findParent(btn, 'card').querySelector('.card__props');
-
-          blockProps.style.display = "block";
-
-          function closeProps(e) {
-            var arrEls = e.path.filter(function (el) {
-              return el instanceof HTMLElement;
-            });
-
-            if (!e.target.classList.contains('card__btn-more')) {
-              if (!arrEls.find(function (el) {
-                return el.classList.contains('card__props-inner');
-              })) {
-                blockProps.style.display = "none";
-              } else {
-                if (e.target.classList.contains('card__props-close')) {
-                  blockProps.style.display = "none";
-                }
-              }
-            }
-          }
-
-          var parentItem = _this3.utils.findParent(blockProps, 'catalog-content__item');
-
-          parentItem.addEventListener('click', closeProps);
-        });
-      });
-
-      if (this.countComponents > this.showComponents) {
-        this.setPagination();
-      }
+    key: "getComponents",
+    value: function getComponents() {
+      this.emit('getComponents');
     }
   }, {
-    key: "setPagination",
-    value: function setPagination() {
-      var _this4 = this;
+    key: "changePage",
+    value: function changePage(event) {
+      var btn = event.target;
 
-      if (this.pagination) {
-        this.pagination.remove();
-      }
-
-      var lastPage = function lastPage(count, showItems) {
-        var lastPage = null;
-
-        if (count % showItems != 0) {
-          lastPage = Math.ceil(count / showItems);
+      if (btn.classList.contains('next')) {
+        if (localStorage.getItem('page') < this.getLastPage()) {
+          this.page = Number(localStorage.getItem('page')) + 1;
+          localStorage.setItem('page', this.page);
         } else {
-          lastPage = count / showItems;
+          localStorage.setItem('page', '1');
         }
+      } else {
+        if (localStorage.getItem('page') == 1) {
+          this.page = this.getLastPage();
+          localStorage.setItem('page', this.page);
+        } else {
+          this.page = Number(localStorage.getItem('page')) - 1;
+          localStorage.setItem('page', this.page);
+        }
+      }
 
-        return lastPage;
-      };
-
-      var pagination = this.pagination = document.createElement('div');
-      pagination.classList.add('catalog-content-pagination');
-      this.catalog.insertAdjacentElement('afterEnd', pagination);
-      pagination.insertAdjacentHTML('afterBegin', "\n            <button offset class=\"catalog-pagination__btn prev\">Prev page</button>\n            <span class=\"catalog-pagination__pages\">\n                ".concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(lastPage(this.countComponents, this.showComponents), "\n            </span>\n            <button offset class=\"catalog-pagination__btn next\">Next Page</button>\n        "));
-      var paginationBtns = pagination.querySelectorAll('.catalog-pagination__btn');
-      paginationBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var getComponents = function getComponents(move) {
-            btn.setAttribute('offset', Number(localStorage.getItem(move)) * _this4.showComponents - _this4.showComponents);
-            _this4.offset = btn.getAttribute('offset');
-
-            _this4.loadComponentFromDB(_this4.action, _this4.ajaxURL, _this4.offset);
-          };
-
-          if (btn.classList.contains('next')) {
-            if (localStorage.getItem('page') < lastPage(_this4.countComponents, _this4.showComponents)) {
-              localStorage.setItem('page', Number(localStorage.getItem('page')) + 1);
-            } else {
-              localStorage.setItem('page', 1);
-            }
-          } else {
-            if (localStorage.getItem('page') == 1) {
-              localStorage.setItem('page', lastPage(_this4.countComponents, _this4.showComponents));
-            } else {
-              localStorage.setItem('page', localStorage.getItem('page') - 1);
-            }
-          }
-
-          getComponents('page');
-        });
-      });
+      this.getComponents();
     }
   }, {
-    key: "setPreloader",
-    value: function setPreloader() {
-      this.catalogContent.innerHTML = '';
-      this.catalogContent.insertAdjacentHTML('afterbegin', "\n            <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"margin: auto; display: block; shape-rendering: auto;\" width=\"197px\" height=\"197px\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid\">\n            <circle cx=\"50\" cy=\"50\" r=\"0\" fill=\"none\" stroke=\"#0051a2\" stroke-width=\"2\">\n            <animate attributeName=\"r\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"0;35\" keyTimes=\"0;1\" keySplines=\"0 0.2 0.8 1\" calcMode=\"spline\" begin=\"-0.6493506493506493s\"></animate>\n            <animate attributeName=\"opacity\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"1;0\" keyTimes=\"0;1\" keySplines=\"0.2 0 0.8 1\" calcMode=\"spline\" begin=\"-0.6493506493506493s\"></animate>\n            </circle>\n            <circle cx=\"50\" cy=\"50\" r=\"0\" fill=\"none\" stroke=\"#1b75be\" stroke-width=\"2\">\n            <animate attributeName=\"r\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"0;35\" keyTimes=\"0;1\" keySplines=\"0 0.2 0.8 1\" calcMode=\"spline\"></animate>\n            <animate attributeName=\"opacity\" repeatCount=\"indefinite\" dur=\"1.2987012987012987s\" values=\"1;0\" keyTimes=\"0;1\" keySplines=\"0.2 0 0.8 1\" calcMode=\"spline\"></animate>\n            </circle>\n            </svg>\n        ");
-    }
-  }, {
-    key: "getParamURL",
-    value: function getParamURL(key) {
-      var p = window.location.search;
-      p = p.match(new RegExp(key + '=([^&=]+)'));
-      return p ? p[1] : false;
+    key: "getLastPage",
+    value: function getLastPage() {
+      return this.count % this.show != 0 ? Math.ceil(this.count / this.show) : this.count / this.show;
     }
   }]);
 
-  return LoadComponents;
+  return Pagination;
 }(events__WEBPACK_IMPORTED_MODULE_0___default.a);
 
-/* harmony default export */ __webpack_exports__["default"] = (LoadComponents);
+/* harmony default export */ __webpack_exports__["default"] = (Pagination);
 
 /***/ }),
 
@@ -11281,86 +11328,92 @@ var LoadComponents = /*#__PURE__*/function (_Events) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Catalog_Catalog__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Catalog/Catalog */ "./js/Catalog/Catalog.js");
-/* harmony import */ var _Admin_Admin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Admin/Admin */ "./js/Admin/Admin.js");
+/* harmony import */ var _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Admin/Admin */ "./js/Admin/Admin.js");
+/* harmony import */ var _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Catalog */ "./js/Catalog/Catalog.js");
 /* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/scss/style.scss */ "./scss/style.scss");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
 
 
+var Main = function Main() {
+  _classCallCheck(this, Main);
 
-var Main = /*#__PURE__*/function () {
-  function Main() {
-    _classCallCheck(this, Main);
+  localStorage.setItem('page', 1);
+  this.session = false;
 
-    localStorage.setItem('page', 1);
-    this.session = false;
-
-    if (this.session) {
-      this.admin = new _Admin_Admin__WEBPACK_IMPORTED_MODULE_1__["default"]();
-    }
-
-    this.catalog = new _Catalog_Catalog__WEBPACK_IMPORTED_MODULE_0__["default"]();
-    this.catalog.emit('utils', {
-      findParent: this.findParent,
-      changeFormatPrice: this.changeFormatPrice
-    });
+  if (this.session) {
+    new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]();
   }
 
-  _createClass(Main, [{
-    key: "findParent",
-    value: function findParent(el, parentClass) {
-      var parent = el.parentNode;
-
-      while (!parent.classList.contains(parentClass)) {
-        parent = parent.parentNode;
-      }
-
-      return parent;
-    }
-  }, {
-    key: "changeFormatPrice",
-    value: function changeFormatPrice(price) {
-      var value = price.split(' ')[0];
-      var symbol = price.split(' ')[1];
-
-      function detach(count, firstPart) {
-        if (firstPart) {
-          return Array.from(value).filter(function (item, index) {
-            return index + 1 <= count;
-          }).join('');
-        } else {
-          return Array.from(value).filter(function (item, index) {
-            return index >= count;
-          }).join('');
-        }
-      }
-
-      switch (value.length) {
-        case 4:
-          return "".concat(detach(1, true), " ").concat(detach(1), " ").concat(symbol);
-
-        case 5:
-          return "".concat(detach(2, true), " ").concat(detach(2), " ").concat(symbol);
-
-        case 6:
-          return "".concat(detach(3, true), " ").concat(detach(3), " ").concat(symbol);
-
-        default:
-          return price;
-      }
-    }
-  }]);
-
-  return Main;
-}();
+  new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.catalog-content', {
+    showComponents: 6,
+    imagesPath: 'images',
+    ajaxURL: 'modules/Component.php'
+  });
+};
 
 new Main();
+
+/***/ }),
+
+/***/ "./js/utils.js":
+/*!*********************!*\
+  !*** ./js/utils.js ***!
+  \*********************/
+/*! exports provided: findParent, changeFormatPrice, getParamURL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findParent", function() { return findParent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeFormatPrice", function() { return changeFormatPrice; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getParamURL", function() { return getParamURL; });
+function findParent(el, parentClass) {
+  var parent = el.parentNode;
+
+  while (!parent.classList.contains(parentClass)) {
+    parent = parent.parentNode;
+  }
+
+  return parent;
+}
+function changeFormatPrice(price) {
+  var value = price.split(' ')[0];
+  var symbol = price.split(' ')[1];
+
+  function detach(count, firstPart) {
+    if (firstPart) {
+      return Array.from(value).filter(function (item, index) {
+        return index + 1 <= count;
+      }).join('');
+    } else {
+      return Array.from(value).filter(function (item, index) {
+        return index >= count;
+      }).join('');
+    }
+  }
+
+  switch (value.length) {
+    case 4:
+      return "".concat(detach(1, true), " ").concat(detach(1), " ").concat(symbol);
+
+    case 5:
+      return "".concat(detach(2, true), " ").concat(detach(2), " ").concat(symbol);
+
+    case 6:
+      return "".concat(detach(3, true), " ").concat(detach(3), " ").concat(symbol);
+
+    default:
+      return price;
+  }
+}
+function getParamURL(key) {
+  var p = window.location.search;
+  p = p.match(new RegExp(key + '=([^&=]+)'));
+  return p ? p[1] : false;
+}
 
 /***/ }),
 
