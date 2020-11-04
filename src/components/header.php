@@ -9,15 +9,18 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="page">
+
         <!-- catalog-menu -->
         <?
             if ($_SESSION['admin']) {
                 include COMPONENT . 'admin.php';
             }
         ?>
-        <header class="page__header header">
-
-        </header>
-        <main class="page__content content">
-            <div class="content__container container">
+         <div class="page">
+            <header class="page__header header">
+            <div class="container">
+                    <h1>Header</h1>
+            </div>
+            </header>
+            <main class="page__content content">
+                <div class="content__container container">

@@ -3,8 +3,12 @@
     z-index: 777;
     &_active {
         .admin-panel__inner {
-            left: 0;
-            transition: all .3s;
+            animation: adminOpen 400ms alternate ease-in forwards;
+        }
+    }
+    &_close {
+        .admin-panel__inner {
+            animation: adminClose 400ms alternate ease-out forwards;
         }
     }
     &__open {
@@ -59,5 +63,23 @@
             background: $theme;
             box-shadow: 2px 2px 2px $shadow;
         }
+    }
+}
+
+@keyframes adminOpen {
+    0% {
+        left: -300px;
+    }
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes adminClose {
+    0% {
+        left: 0
+    }
+    100% {
+        left: -300px;
     }
 }

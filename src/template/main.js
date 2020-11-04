@@ -10779,6 +10779,7 @@ var Add = /*#__PURE__*/function () {
     this.$root = root;
     this.ajaxURL = ajaxURL;
     this.action = 'add';
+    this.panel = true;
     this.selectorsInit();
     this.addEventListener();
   }
@@ -10826,11 +10827,11 @@ var Add = /*#__PURE__*/function () {
         throw new Error('Не были найден .admin-panel__open');
       }
 
-      this.catalog = document.querySelector('.catalog');
-      this.catalog.classList.add('catalog_panelOpen');
+      this.page = document.querySelector('.page');
+      this.page.classList.add('page_left');
 
-      if (!this.catalog) {
-        throw new Error('Не найден .catalog');
+      if (!this.page) {
+        throw new Error('Не найден .page');
       }
     }
   }, {
@@ -10929,14 +10930,28 @@ var Add = /*#__PURE__*/function () {
       }); // Показывает панель
 
       this.btnShow.addEventListener('click', function () {
-        _this.adminPanel.classList.toggle('admin-panel_active');
+        _this.panel = !_this.panel;
 
-        _this.catalog.classList.toggle('catalog_panelOpen');
+        if (_this.panel) {
+          _this.adminPanel.classList.remove('admin-panel_close');
 
-        if (_this.adminPanel.classList.contains('admin-panel_active')) {
+          _this.page.classList.remove('page_normal');
+
+          _this.adminPanel.classList.add('admin-panel_active');
+
+          _this.page.classList.add('page_left');
+
           _this.btnShow.innerHTML = "&#10006;";
           _this.btnShow.style.fontSize = "16px";
         } else {
+          _this.adminPanel.classList.remove('admin-panel_active');
+
+          _this.page.classList.remove('page_left');
+
+          _this.adminPanel.classList.add('admin-panel_close');
+
+          _this.page.classList.add('page_normal');
+
           _this.btnShow.textContent = "+";
           _this.btnShow.style.fontSize = "28px";
         }
@@ -11131,13 +11146,19 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
           var previewParams = params.filter(function (el, i) {
             return i <= 2;
           });
-          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"btn card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\n                                ").concat(screen.width < 450 ? 'Характеристики' : 'Все характеристики', "\n                            </button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"btn card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
         }).join('');
       } else {
         this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
       }
 
-      this.$catalog.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\">\n                 ".concat(this.components, "\n            </div>\n        ")); // addEventListener - properties
+      this.$catalog.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\">\n                 ".concat(this.components, "\n            </div>\n        "));
+      window.addEventListener('resize', function () {
+        var moreButtons = document.querySelectorAll('.card__btn-more');
+        moreButtons.forEach(function (btn) {
+          btn.textContent = screen.width < 425 ? 'Характеристики' : 'Все характеристики';
+        });
+      }); // addEventListener - properties
 
       this.btnsProps = document.querySelectorAll('.card__btn-more');
       this.btnsProps.forEach(function (btn) {
@@ -11257,6 +11278,8 @@ var Catalog = /*#__PURE__*/function () {
           _this.cards.on('getComponents', function (show) {
             return _this.getComponents(show);
           });
+
+          document.body.scrollIntoView(false);
         }, _this.delayData);
       }).catch(function () {
         _this.preloader(false);

@@ -47,6 +47,7 @@ class Catalog {
                     this.cards.on('getComponents',
                         (show) => this.getComponents(show))
 
+                    document.body.scrollIntoView(false)
 
                 }, this.delayData)
             })

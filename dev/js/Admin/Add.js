@@ -1,10 +1,11 @@
 class Add {
     constructor(root, ajaxURL) {
         this.$root = root
-        this.ajaxURL = ajaxURL;
+        this.ajaxURL = ajaxURL
         this.action = 'add'
+        this.panel = true
         this.selectorsInit()
-        this.addEventListener();
+        this.addEventListener()
     }
 
     selectorsInit() {
@@ -41,10 +42,10 @@ class Add {
             throw new Error('Не были найден .admin-panel__open');
         }
 
-        this.catalog = document.querySelector('.catalog');
-        this.catalog.classList.add('catalog_panelOpen');
-        if (!this.catalog) {
-            throw new Error('Не найден .catalog');
+        this.page = document.querySelector('.page');
+        this.page.classList.add('page_left');
+        if (!this.page) {
+            throw new Error('Не найден .page');
         }
     }
 
@@ -120,16 +121,22 @@ class Add {
         this.form.addEventListener('submit', event => this.addComponentInDB(event));
         // Показывает панель
         this.btnShow.addEventListener('click', () => {
-            this.adminPanel.classList.toggle('admin-panel_active')
-            this.catalog.classList.toggle('catalog_panelOpen');
-            if (this.adminPanel.classList.contains('admin-panel_active')) {
+            this.panel = !this.panel
+            if (this.panel) {
+                this.adminPanel.classList.remove('admin-panel_close')
+                this.page.classList.remove('page_normal');
+                this.adminPanel.classList.add('admin-panel_active')
+                this.page.classList.add('page_left');
                 this.btnShow.innerHTML = "&#10006;"
                 this.btnShow.style.fontSize = "16px"
             } else {
+                this.adminPanel.classList.remove('admin-panel_active')
+                this.page.classList.remove('page_left');
+                this.adminPanel.classList.add('admin-panel_close')
+                this.page.classList.add('page_normal');
                 this.btnShow.textContent = "+"
                 this.btnShow.style.fontSize = "28px"
             }
-
         })
 
 

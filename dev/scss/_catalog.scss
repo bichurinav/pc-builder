@@ -2,17 +2,20 @@
     display: flex;
     position: relative;
     justify-content: space-between;
-    &_panelOpen {
-        left: 150px;
-    }
     &__menu {
         flex-basis: 19%;
+        @media (max-width: 1023px) {
+            display: none;
+        }
     }
     &-content {
         flex-basis: 79%;
         display: flex;
         min-height: 400px;
         flex-direction: column;
+        @media (max-width: 1023px) {
+            flex-basis: 100%;
+        }
         &-items {
             display: flex;
             flex-wrap: wrap;

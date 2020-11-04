@@ -38,7 +38,9 @@ class Cards extends EventEmitter {
                         <h2 class="card__title">${component['name']}</h2>
                         <div class="card__preview-props">
                              ${previewParams.join('')}
-                            <button class="btn card__btn-more">Все характеристики</button>
+                            <button class="btn card__btn-more">
+                                ${screen.width < 450 ? 'Характеристики' : 'Все характеристики'}
+                            </button>
                         </div>
                         <span class="card__price">
                             &asymp; ${changeFormatPrice(component['Цена'])}
@@ -66,11 +68,19 @@ class Cards extends EventEmitter {
             this.components = `<h2>Пусто :(</h2>`
         }
 
+
         this.$catalog.insertAdjacentHTML('afterbegin', `
             <div class="catalog-content-items">
                  ${this.components}
             </div>
         `);
+
+        window.addEventListener('resize', () => {
+            let moreButtons =  document.querySelectorAll('.card__btn-more')
+            moreButtons.forEach((btn) => {
+                btn.textContent = screen.width < 425 ? 'Характеристики' : 'Все характеристики'
+            })
+        })
 
         // addEventListener - properties
         this.btnsProps = document.querySelectorAll('.card__btn-more');

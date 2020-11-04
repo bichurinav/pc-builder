@@ -22,6 +22,17 @@ ul {
     list-style-type: none;
 }
 
+.page {
+    position: relative;
+    &_left {
+        animation: pageLeft .2s alternate ease-in forwards;
+    }
+
+    &_normal {
+        animation: pageNormal.2s alternate ease-in forwards;
+    }
+}
+
 .btn {
     border: none;
     outline: none;
@@ -50,3 +61,41 @@ ul {
         width: 100%;
     }
 }
+
+@keyframes pageLeft {
+    0% {
+        left: 0
+    }
+    100% {
+        left: 150px
+    }
+}
+
+@keyframes pageNormal {
+    0% {
+        left: 150px
+    }
+    100% {
+        left: 0
+    }
+}
+
+@media (max-width: 1440px) {
+    @keyframes pageLeft {
+        0% {
+            left: 0
+        }
+        100% {
+            left: 300px
+        }
+    }
+    @keyframes pageNormal {
+        0% {
+            left: 300px
+        }
+        100% {
+            left: 0
+        }
+    }
+}
+
