@@ -23,7 +23,7 @@ class Cards extends EventEmitter {
                 let params = []
                 for (let key in component) {
                     if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
-                        params.push(`<div><b>${key.replaceAll('_', ' ')}</b>: ${component[key]}</div>`);
+                        params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${component[key]}</div>`);
                     }
                 }
                 const previewParams = params.filter((el, i) => i <= 2)
@@ -48,8 +48,9 @@ class Cards extends EventEmitter {
                     <div class="card__props">
                         <div class="card__props-inner">
                             ${params.join('')}
-                            <button class="btn card__props-close">&#10006;</button>
+                            
                         </div>
+                        <button class="btn card__props-close">&#10006;</button>
                     </div>
                 </div>
                 `
@@ -79,7 +80,7 @@ class Cards extends EventEmitter {
     showProps(event) {
         const btn = event.target
         const blockProps = findParent(btn, 'card').querySelector('.card__props');
-        blockProps.style.display = "block";
+        blockProps.style.display = "flex";
         const card = findParent(blockProps, 'catalog-content__item');
         card.addEventListener('click', this.closeProps.bind(this, blockProps))
     }

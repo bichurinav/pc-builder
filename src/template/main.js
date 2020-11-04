@@ -10757,10 +10757,10 @@ try {
 
 /***/ }),
 
-/***/ "./js/Admin/AddComponent.js":
-/*!**********************************!*\
-  !*** ./js/Admin/AddComponent.js ***!
-  \**********************************/
+/***/ "./js/Admin/Add.js":
+/*!*************************!*\
+  !*** ./js/Admin/Add.js ***!
+  \*************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -10772,58 +10772,68 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var AddComponent = /*#__PURE__*/function () {
-  function AddComponent() {
-    _classCallCheck(this, AddComponent);
+var Add = /*#__PURE__*/function () {
+  function Add(root, ajaxURL) {
+    _classCallCheck(this, Add);
 
-    this.formAddComponent = document.querySelector('#form-add-component');
-
-    if (!this.formAddComponent) {
-      throw new Error('Не была найдена форма #form-add-component');
-    }
-
-    this.formAddComponentSelect = document.querySelector('#form-add-component-select');
-
-    if (!this.formAddComponentSelect) {
-      throw new Error('Не был найден select #form-add-component-select у формы');
-    }
-
-    this.formAddComponentUpload = document.querySelector('#form-add-component-upload');
-
-    if (!this.formAddComponentUpload) {
-      throw new Error('Не был найден upload-изображений #form-add-component-select у формы');
-    }
-
-    this.fields = document.querySelectorAll('.form-add-component__form input');
-
-    if (!this.formAddComponentUpload) {
-      throw new Error('Не были найдены поля у формы');
-    }
-
-    this.adminPanel = document.querySelector('.admin-panel');
-
-    if (!this.adminPanel) {
-      throw new Error('Не были найден .admin-panel');
-    }
-
-    this.btnShow = document.querySelector('.admin-panel__open');
-
-    if (!this.btnShow) {
-      throw new Error('Не были найден .admin-panel__open');
-    }
-
-    this.catalog = document.querySelector('.catalog');
-
-    if (!this.catalog) {
-      throw new Error('Не найден .catalog');
-    }
-
-    this.catalog.classList.add('catalog_panelOpen');
-    this.ajaxURL = '../modules/Component.php';
+    this.$root = root;
+    this.ajaxURL = ajaxURL;
+    this.action = 'add';
+    this.selectorsInit();
     this.addEventListener();
   }
 
-  _createClass(AddComponent, [{
+  _createClass(Add, [{
+    key: "selectorsInit",
+    value: function selectorsInit() {
+      if (!this.$root) {
+        throw new Error('Не была найдена .admin-panel');
+      }
+
+      this.form = this.$root.querySelector('#form-add-component');
+
+      if (!this.form) {
+        throw new Error('Не была найдена форма #form-add-component');
+      }
+
+      this.formSelect = document.querySelector('#form-add-component-select');
+
+      if (!this.formSelect) {
+        throw new Error('Не был найден select #form-add-component-select у формы');
+      }
+
+      this.formUpload = document.querySelector('#form-add-component-upload');
+
+      if (!this.formUpload) {
+        throw new Error('Не был найден upload-изображений #form-add-component-select у формы');
+      }
+
+      this.fields = document.querySelectorAll('.form-add-component__form input');
+
+      if (!this.fields) {
+        throw new Error('Не были найдены поля у формы');
+      }
+
+      this.adminPanel = document.querySelector('.admin-panel');
+
+      if (!this.adminPanel) {
+        throw new Error('Не были найден .admin-panel');
+      }
+
+      this.btnShow = document.querySelector('.admin-panel__open');
+
+      if (!this.btnShow) {
+        throw new Error('Не были найден .admin-panel__open');
+      }
+
+      this.catalog = document.querySelector('.catalog');
+      this.catalog.classList.add('catalog_panelOpen');
+
+      if (!this.catalog) {
+        throw new Error('Не найден .catalog');
+      }
+    }
+  }, {
     key: "changeComponent",
     value: function changeComponent(event) {
       document.location.href = "/?component=".concat(event.target.value);
@@ -10843,14 +10853,14 @@ var AddComponent = /*#__PURE__*/function () {
     }
   }, {
     key: "addComponentInDB",
-    value: function addComponentInDB(data) {
-      data['event'].preventDefault();
+    value: function addComponentInDB(event) {
+      event.preventDefault();
 
       if (this.isFormValid(this.fields)) {
         // формируем данные для отправки
-        var body = new FormData(data['event'].target);
-        body.append('action', data['action']);
-        var req = fetch(data['url'], {
+        var body = new FormData(event.target);
+        body.append('action', this.action);
+        var req = fetch(this.ajaxURL, {
           method: 'POST',
           body: body
         }); // получаем ответ от сервера
@@ -10906,20 +10916,16 @@ var AddComponent = /*#__PURE__*/function () {
       var _this = this;
 
       // При изменении select меняется выбор добавления компонента
-      this.formAddComponentSelect.addEventListener('change', function (event) {
+      this.formSelect.addEventListener('change', function (event) {
         return _this.changeComponent(event);
       }); // Добавляет загрузку изображения в форму
 
-      this.formAddComponentUpload.addEventListener('change', function (event) {
+      this.formUpload.addEventListener('change', function (event) {
         return _this.uploadImage(event);
       }); // Добавляет компонент в базу данных
 
-      this.formAddComponent.addEventListener('submit', function (event) {
-        return _this.addComponentInDB({
-          action: 'add',
-          event: event,
-          url: _this.ajaxURL
-        });
+      this.form.addEventListener('submit', function (event) {
+        return _this.addComponentInDB(event);
       }); // Показывает панель
 
       this.btnShow.addEventListener('click', function () {
@@ -10938,10 +10944,10 @@ var AddComponent = /*#__PURE__*/function () {
     }
   }]);
 
-  return AddComponent;
+  return Add;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (AddComponent);
+/* harmony default export */ __webpack_exports__["default"] = (Add);
 
 /***/ }),
 
@@ -10954,15 +10960,20 @@ var AddComponent = /*#__PURE__*/function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AddComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddComponent */ "./js/Admin/AddComponent.js");
+/* harmony import */ var _Add__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Add */ "./js/Admin/Add.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
-var Admin = function Admin() {
+var Admin = function Admin(selector, options) {
   _classCallCheck(this, Admin);
 
-  new _AddComponent__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  this.$el = document.querySelector(selector);
+  this.ajaxURL = options.ajaxURL;
+
+  if (this.$el) {
+    this.add = new _Add__WEBPACK_IMPORTED_MODULE_0__["default"](this.$el, this.ajaxURL);
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Admin);
@@ -11043,14 +11054,14 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
 
           for (var key in component) {
             if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
-              params.push("<div><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(component[key], "</div>"));
+              params.push("<div class=\"card__prop\"><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(component[key], "</div>"));
             }
           }
 
           var previewParams = params.filter(function (el, i) {
             return i <= 2;
           });
-          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            <button class=\"btn card__props-close\">&#10006;</button>\n                        </div>\n                    </div>\n                </div>\n                ");
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                </div>\n                ");
         }).join('');
       } else {
         this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
@@ -11075,7 +11086,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
     value: function showProps(event) {
       var btn = event.target;
       var blockProps = Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(btn, 'card').querySelector('.card__props');
-      blockProps.style.display = "block";
+      blockProps.style.display = "flex";
       var card = Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(blockProps, 'catalog-content__item');
       card.addEventListener('click', this.closeProps.bind(this, blockProps));
     }
@@ -11141,7 +11152,6 @@ var Catalog = /*#__PURE__*/function () {
     _classCallCheck(this, Catalog);
 
     this.$el = document.querySelector(selector);
-    this.offset =  false || localStorage.getItem('page');
     this.ajaxURL = options.ajaxURL;
     this.showComponents = options.showComponents;
     this.imagesPath = options.imagesPath;
@@ -11161,11 +11171,12 @@ var Catalog = /*#__PURE__*/function () {
     value: function getComponents() {
       var _this = this;
 
+      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var body = new FormData();
       body.append('action', 'load');
       body.append('component', Object(_js_utils__WEBPACK_IMPORTED_MODULE_2__["getParamURL"])('component'));
-      body.append('offset', Number(this.offset));
-      body.append('limit', Number(this.showComponents));
+      body.append('offset', offset);
+      body.append('limit', this.showComponents);
       this.preloader(true);
       var req = fetch(this.ajaxURL, {
         method: 'POST',
@@ -11184,7 +11195,9 @@ var Catalog = /*#__PURE__*/function () {
 
           _this.cards.render();
 
-          _this.cards.on('getComponents', _this.getComponents.bind(_this));
+          _this.cards.on('getComponents', function (offset) {
+            return _this.getComponents(offset);
+          });
         }, _this.delayData);
       }).catch(function () {
         _this.preloader(false);
@@ -11259,6 +11272,7 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
     _this.count = options.count;
     _this.show = options.show;
     _this.$catalog = options.catalog;
+    _this.offset = 0;
     return _this;
   }
 
@@ -11279,7 +11293,8 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
   }, {
     key: "getComponents",
     value: function getComponents() {
-      this.emit('getComponents');
+      this.offset = this.page === 1 ? 0 : (this.page - 1) * this.show;
+      this.emit('getComponents', this.offset);
     }
   }, {
     key: "changePage",
@@ -11291,7 +11306,8 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
           this.page = Number(localStorage.getItem('page')) + 1;
           localStorage.setItem('page', this.page);
         } else {
-          localStorage.setItem('page', '1');
+          this.page = 1;
+          localStorage.setItem('page', this.page);
         }
       } else {
         if (localStorage.getItem('page') == 1) {
@@ -11341,12 +11357,9 @@ var Main = function Main() {
   _classCallCheck(this, Main);
 
   localStorage.setItem('page', 1);
-  this.session = false;
-
-  if (this.session) {
-    new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]();
-  }
-
+  new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]('.admin-panel', {
+    ajaxURL: '../modules/Component.php'
+  });
   new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.catalog-content', {
     showComponents: 6,
     imagesPath: 'images',

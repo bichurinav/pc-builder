@@ -5,7 +5,6 @@ import {getParamURL} from "@/js/utils";
 class Catalog {
     constructor(selector, options) {
         this.$el = document.querySelector(selector)
-        this.offset = 0 || localStorage.getItem('page');
         this.ajaxURL = options.ajaxURL
         this.showComponents = options.showComponents
         this.imagesPath = options.imagesPath
@@ -21,12 +20,12 @@ class Catalog {
 
     }
 
-    getComponents() {
+    getComponents(offset = 0) {
         let body = new FormData();
         body.append('action','load');
         body.append('component', getParamURL('component'))
-        body.append('offset', Number(this.offset))
-        body.append('limit', Number(this.showComponents))
+        body.append('offset', offset)
+        body.append('limit', this.showComponents)
 
         this.preloader(true)
 
@@ -45,7 +44,8 @@ class Catalog {
                         count: data.count,
                     })
                     this.cards.render()
-                    this.cards.on('getComponents', this.getComponents.bind(this))
+                    this.cards.on('getComponents',
+                        (offset) => this.getComponents(offset))
 
                 }, this.delayData)
             })

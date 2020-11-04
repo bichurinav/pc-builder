@@ -1,22 +1,33 @@
-class AddComponent {
-    constructor() {
-        this.formAddComponent = document.querySelector('#form-add-component');
-        if (!this.formAddComponent) {
+class Add {
+    constructor(root, ajaxURL) {
+        this.$root = root
+        this.ajaxURL = ajaxURL;
+        this.action = 'add'
+        this.selectorsInit()
+        this.addEventListener();
+    }
+
+    selectorsInit() {
+        if (!this.$root) {
+            throw new Error('Не была найдена .admin-panel');
+        }
+        this.form = this.$root.querySelector('#form-add-component')
+        if (!this.form) {
             throw new Error('Не была найдена форма #form-add-component');
         }
 
-        this.formAddComponentSelect = document.querySelector('#form-add-component-select');
-        if (!this.formAddComponentSelect) {
+        this.formSelect = document.querySelector('#form-add-component-select');
+        if (!this.formSelect) {
             throw new Error('Не был найден select #form-add-component-select у формы');
         }
 
-        this.formAddComponentUpload = document.querySelector('#form-add-component-upload');
-        if (!this.formAddComponentUpload) {
+        this.formUpload = document.querySelector('#form-add-component-upload');
+        if (!this.formUpload) {
             throw new Error('Не был найден upload-изображений #form-add-component-select у формы');
         }
 
         this.fields = document.querySelectorAll('.form-add-component__form input')
-        if (!this.formAddComponentUpload) {
+        if (!this.fields) {
             throw new Error('Не были найдены поля у формы');
         }
 
@@ -31,23 +42,15 @@ class AddComponent {
         }
 
         this.catalog = document.querySelector('.catalog');
+        this.catalog.classList.add('catalog_panelOpen');
         if (!this.catalog) {
             throw new Error('Не найден .catalog');
         }
-
-        this.catalog.classList.add('catalog_panelOpen');
-
-        this.ajaxURL = '../modules/Component.php';
-        this.addEventListener();
     }
-
-
 
     changeComponent(event) {
         document.location.href = `/?component=${event.target.value}`;
     }
-
-
 
     uploadImage(event) {
         let textSelector = document.querySelector('.upload-file__text');
@@ -59,16 +62,14 @@ class AddComponent {
         textSelector.textContent = file.name;
     }
 
-
-
-    addComponentInDB(data) {
-        data['event'].preventDefault();
+    addComponentInDB(event) {
+        event.preventDefault();
         if (this.isFormValid(this.fields)) {
-            // формируем данные для отправки
-            let body = new FormData(data['event'].target);
-            body.append('action', data['action']);
 
-            const req = fetch(data['url'], {
+            // формируем данные для отправки
+            let body = new FormData(event.target);
+            body.append('action', this.action);
+            const req = fetch(this.ajaxURL, {
                 method: 'POST',
                 body
             })
@@ -83,8 +84,6 @@ class AddComponent {
             })
         }
     }
-
-
 
     isFormValid(fields) {
         let invalid = [];
@@ -112,19 +111,13 @@ class AddComponent {
         return !invalid.length
     }
 
-
-
     addEventListener() {
         // При изменении select меняется выбор добавления компонента
-        this.formAddComponentSelect.addEventListener('change', event => this.changeComponent(event))
+        this.formSelect.addEventListener('change', event => this.changeComponent(event))
         // Добавляет загрузку изображения в форму
-        this.formAddComponentUpload.addEventListener('change', event => this.uploadImage(event))
+        this.formUpload.addEventListener('change', event => this.uploadImage(event))
         // Добавляет компонент в базу данных
-        this.formAddComponent.addEventListener('submit', event => this.addComponentInDB({
-            action: 'add',
-            event,
-            url: this.ajaxURL
-        }));
+        this.form.addEventListener('submit', event => this.addComponentInDB(event));
         // Показывает панель
         this.btnShow.addEventListener('click', () => {
             this.adminPanel.classList.toggle('admin-panel_active')
@@ -143,4 +136,4 @@ class AddComponent {
     }
 }
 
-export default AddComponent;
+export default Add;

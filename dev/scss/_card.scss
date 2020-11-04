@@ -40,11 +40,9 @@
         border-radius: 8px;
         overflow: auto;
         &-inner {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
             position: relative;
             padding: 3px;
+            //height: 100%;
         }
         &-close {
             position: absolute;
@@ -62,6 +60,10 @@
                 opacity: .5;
             }
         }
+    }
+
+    &__prop {
+        margin: 5px 0;
     }
 
     &__btn-box {

@@ -5,7 +5,8 @@ class Pagination extends EventEmitter {
         super()
         this.count = options.count;
         this.show = options.show;
-        this.$catalog = options.catalog
+        this.$catalog = options.catalog;
+        this.offset = 0;
     }
 
     render() {
@@ -28,7 +29,8 @@ class Pagination extends EventEmitter {
     }
 
     getComponents() {
-        this.emit('getComponents')
+        this.offset = this.page === 1 ? 0 : (this.page - 1) * this.show
+        this.emit('getComponents', this.offset)
     }
 
     changePage(event) {
@@ -38,7 +40,8 @@ class Pagination extends EventEmitter {
                 this.page = Number(localStorage.getItem('page')) + 1
                 localStorage.setItem('page', this.page)
             } else {
-                localStorage.setItem('page', '1')
+                this.page = 1
+                localStorage.setItem('page', this.page)
             }
         } else {
             if (localStorage.getItem('page') == 1) {

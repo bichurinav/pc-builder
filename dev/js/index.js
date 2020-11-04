@@ -5,12 +5,9 @@ import '@/scss/style.scss'
 class Main {
     constructor() {
         localStorage.setItem('page', 1);
-        this.session = false;
-
-        if (this.session) {
-            new Admin();
-        }
-
+        new Admin('.admin-panel', {
+            ajaxURL: '../modules/Component.php'
+        });
         new Catalog('.catalog-content', {
             showComponents: 6,
             imagesPath: 'images',

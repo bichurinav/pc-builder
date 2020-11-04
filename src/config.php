@@ -22,7 +22,7 @@ $arrComponentList = array(
             ),
             'Цена' => array(
                 'title' => 'Цена',
-                'type' => 'text'
+                'type' => 'number'
             ),
             'Частота' => array(
                 'title' => 'Частота',
@@ -39,7 +39,7 @@ $arrComponentList = array(
             'Поддержка частот памяти' => array(
                 'title' => 'Поддержка частот памяти',
                 'type' => 'text'
-            )
+            ),
         )
     ),
     'motherboard' => array(
@@ -64,7 +64,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),

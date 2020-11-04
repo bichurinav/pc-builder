@@ -15,9 +15,10 @@ class Component
         $this->component = $arData['component'];
         $this->offset = ($arData['offset']) ? $arData['offset'] : 0;
         $this->limit = ($arData['limit']) ? $arData['limit'] : 0;
-        $this->params = $arData;
+        $this->imagesPath = '../images';
         unset($arData['action']);
         unset($arData['component']);
+        $this->params = $arData;
     }
 
 
@@ -31,17 +32,20 @@ class Component
 
         $checkedParams = array_filter($this->params, "checkEmptyVal");
         if ($this->params === $checkedParams) {
-
             // Выгружаем картинку в папку
             if ($_FILES) {
+
                 if (is_uploaded_file($_FILES['image']['tmp_name'])) {
                     $imageName = basename($_FILES['image']['name']);
+
                     $imagePath = "$this->imagesPath/$this->component/$imageName";
                     $imageDir = "$this->imagesPath/$this->component";
                     $image = "$this->imagesPath/$this->component/$imageName";
+
                     if (!is_dir($imageDir)) {
                         mkdir($imageDir);
                     }
+
                     move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
                 }
             }
@@ -49,7 +53,7 @@ class Component
             $name = $this->params['name'];
             $this->params['Цена'] = $this->params['Цена'] . " ₽";
             unset($this->params['name']);
-            $params = json_encode($this->params);
+            $params = json_encode($this->params, JSON_UNESCAPED_UNICODE);
 
             // Проверяем на существование компонента в таблице (база-данных)
             $checkName = $this->DB->query("SELECT * FROM $this->component WHERE name = '$name'");
