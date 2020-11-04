@@ -1,5 +1,6 @@
 import {findParent, changeFormatPrice} from "@/js/utils";
 import Pagination from "@/js/Catalog/Pagination";
+import Delete from "@/js/Admin/Delete";
 import EventEmitter from 'events'
 
 class Cards extends EventEmitter {
@@ -10,6 +11,7 @@ class Cards extends EventEmitter {
         this.count = options.count
         this.show = options.show
         this.imagesPath = options.imagesPath
+        this.ajaxURL = options.ajaxURL
         this.pagination = new Pagination({
             count: this.count,
             show: this.show,
@@ -52,6 +54,11 @@ class Cards extends EventEmitter {
                         </div>
                         <button class="btn card__props-close">&#10006;</button>
                     </div>
+                    <button class="btn card__del">
+                        <span class="material-icons">
+                            backspace
+                        </span>
+                    </button>
                 </div>
                 `
             }).join('')
@@ -71,6 +78,10 @@ class Cards extends EventEmitter {
             btn.addEventListener('click', this.showProps.bind(this))
         })
 
+        if (document.querySelector('.admin-panel')) {
+            new Delete('.card__del', this.ajaxURL);
+        }
+
         if (this.count > this.show) {
             this.pagination.render()
             this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset))
@@ -86,15 +97,8 @@ class Cards extends EventEmitter {
     }
 
     closeProps(blockProps, event) {
-        let arrEls = event.path.filter(el => el instanceof HTMLElement);
-        if (!event.target.classList.contains('card__btn-more')) {
-            if (!arrEls.find(el => el.classList.contains('card__props-inner'))) {
-                blockProps.style.display = "none";
-            } else {
-                if (event.target.classList.contains('card__props-close')) {
-                    blockProps.style.display = "none";
-                }
-            }
+        if (event.target.classList.contains('card__props-close')) {
+            blockProps.style.display = "none";
         }
     }
 

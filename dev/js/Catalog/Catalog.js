@@ -1,5 +1,4 @@
 import Cards from "@/js/Catalog/Cards";
-import EventEmitter from 'events'
 import {getParamURL} from "@/js/utils";
 
 class Catalog {
@@ -8,7 +7,7 @@ class Catalog {
         this.ajaxURL = options.ajaxURL
         this.showComponents = options.showComponents
         this.imagesPath = options.imagesPath
-        this.delayData = 500
+        this.delayData = 200
         this.optionsCards = {
             catalog: this.$el,
             imagesPath: this.imagesPath,
@@ -20,12 +19,12 @@ class Catalog {
 
     }
 
-    getComponents(offset = 0) {
+    getComponents(show = this.showComponents) {
+
         let body = new FormData();
         body.append('action','load');
         body.append('component', getParamURL('component'))
-        body.append('offset', offset)
-        body.append('limit', this.showComponents)
+        body.append('limit', show)
 
         this.preloader(true)
 
@@ -42,10 +41,12 @@ class Catalog {
                         ...this.optionsCards,
                         cards: data.items,
                         count: data.count,
+                        ajaxURL: this.ajaxURL
                     })
                     this.cards.render()
                     this.cards.on('getComponents',
-                        (offset) => this.getComponents(offset))
+                        (show) => this.getComponents(show))
+
 
                 }, this.delayData)
             })
@@ -53,6 +54,7 @@ class Catalog {
                 this.preloader(false)
                 this.cards.render()
             })
+
     }
 
     preloader(flag) {

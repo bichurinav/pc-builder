@@ -10972,11 +10972,78 @@ var Admin = function Admin(selector, options) {
   this.ajaxURL = options.ajaxURL;
 
   if (this.$el) {
-    this.add = new _Add__WEBPACK_IMPORTED_MODULE_0__["default"](this.$el, this.ajaxURL);
+    new _Add__WEBPACK_IMPORTED_MODULE_0__["default"](this.$el, this.ajaxURL);
   }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Admin);
+
+/***/ }),
+
+/***/ "./js/Admin/Delete.js":
+/*!****************************!*\
+  !*** ./js/Admin/Delete.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./js/utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Delete = /*#__PURE__*/function () {
+  function Delete(selector, ajaxURL) {
+    var _this = this;
+
+    _classCallCheck(this, Delete);
+
+    this.$delButtons = document.querySelectorAll(selector);
+    this.action = 'remove';
+    this.ajaxURL = ajaxURL;
+    this.$delButtons.forEach(function (btn) {
+      btn.style.display = 'block';
+      btn.addEventListener('click', _this.delCardFromDB.bind(_this, btn));
+    });
+  }
+
+  _createClass(Delete, [{
+    key: "delCardFromDB",
+    value: function delCardFromDB(btn) {
+      var cardName = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(btn, 'card').querySelector('.card__title').textContent;
+
+      if (confirm("\u0423\u0434\u0430\u043B\u0438\u0442\u044C ".concat(cardName, " ?"))) {
+        var component = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getParamURL"])('component');
+        var body = new FormData();
+        body.append('action', this.action);
+        body.append('component', component);
+        body.append('cardName', cardName);
+        var req = fetch(this.ajaxURL, {
+          method: 'POST',
+          body: body
+        });
+        req.then(function (data) {
+          return data.text();
+        }).then(function (data) {
+          document.location.href = "/?component=".concat(data);
+        });
+        req.catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }]);
+
+  return Delete;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Delete);
 
 /***/ }),
 
@@ -10991,8 +11058,9 @@ var Admin = function Admin(selector, options) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
 /* harmony import */ var _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Pagination */ "./js/Catalog/Pagination.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/Admin/Delete */ "./js/Admin/Delete.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11019,6 +11087,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Cards = /*#__PURE__*/function (_EventEmitter) {
   _inherits(Cards, _EventEmitter);
 
@@ -11035,6 +11104,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
     _this.count = options.count;
     _this.show = options.show;
     _this.imagesPath = options.imagesPath;
+    _this.ajaxURL = options.ajaxURL;
     _this.pagination = new _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"]({
       count: _this.count,
       show: _this.show,
@@ -11061,7 +11131,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
           var previewParams = params.filter(function (el, i) {
             return i <= 2;
           });
-          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                </div>\n                ");
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\u0412\u0441\u0435 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043A\u0438</button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"btn card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
         }).join('');
       } else {
         this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
@@ -11073,6 +11143,10 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
       this.btnsProps.forEach(function (btn) {
         btn.addEventListener('click', _this2.showProps.bind(_this2));
       });
+
+      if (document.querySelector('.admin-panel')) {
+        new _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_2__["default"]('.card__del', this.ajaxURL);
+      }
 
       if (this.count > this.show) {
         this.pagination.render();
@@ -11093,26 +11167,14 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
   }, {
     key: "closeProps",
     value: function closeProps(blockProps, event) {
-      var arrEls = event.path.filter(function (el) {
-        return el instanceof HTMLElement;
-      });
-
-      if (!event.target.classList.contains('card__btn-more')) {
-        if (!arrEls.find(function (el) {
-          return el.classList.contains('card__props-inner');
-        })) {
-          blockProps.style.display = "none";
-        } else {
-          if (event.target.classList.contains('card__props-close')) {
-            blockProps.style.display = "none";
-          }
-        }
+      if (event.target.classList.contains('card__props-close')) {
+        blockProps.style.display = "none";
       }
     }
   }]);
 
   return Cards;
-}(events__WEBPACK_IMPORTED_MODULE_2___default.a);
+}(events__WEBPACK_IMPORTED_MODULE_3___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = (Cards);
 
@@ -11128,9 +11190,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/Catalog/Cards */ "./js/Catalog/Cards.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
+/* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -11146,7 +11206,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var Catalog = /*#__PURE__*/function () {
   function Catalog(selector, options) {
     _classCallCheck(this, Catalog);
@@ -11155,7 +11214,7 @@ var Catalog = /*#__PURE__*/function () {
     this.ajaxURL = options.ajaxURL;
     this.showComponents = options.showComponents;
     this.imagesPath = options.imagesPath;
-    this.delayData = 500;
+    this.delayData = 200;
     this.optionsCards = {
       catalog: this.$el,
       imagesPath: this.imagesPath,
@@ -11171,12 +11230,11 @@ var Catalog = /*#__PURE__*/function () {
     value: function getComponents() {
       var _this = this;
 
-      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var show = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.showComponents;
       var body = new FormData();
       body.append('action', 'load');
-      body.append('component', Object(_js_utils__WEBPACK_IMPORTED_MODULE_2__["getParamURL"])('component'));
-      body.append('offset', offset);
-      body.append('limit', this.showComponents);
+      body.append('component', Object(_js_utils__WEBPACK_IMPORTED_MODULE_1__["getParamURL"])('component'));
+      body.append('limit', show);
       this.preloader(true);
       var req = fetch(this.ajaxURL, {
         method: 'POST',
@@ -11190,13 +11248,14 @@ var Catalog = /*#__PURE__*/function () {
 
           _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.optionsCards), {}, {
             cards: data.items,
-            count: data.count
+            count: data.count,
+            ajaxURL: _this.ajaxURL
           }));
 
           _this.cards.render();
 
-          _this.cards.on('getComponents', function (offset) {
-            return _this.getComponents(offset);
+          _this.cards.on('getComponents', function (show) {
+            return _this.getComponents(show);
           });
         }, _this.delayData);
       }).catch(function () {
@@ -11272,51 +11331,37 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
     _this.count = options.count;
     _this.show = options.show;
     _this.$catalog = options.catalog;
-    _this.offset = 0;
     return _this;
   }
 
   _createClass(Pagination, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       this.pagination = document.createElement('div');
       this.pagination.classList.add('catalog-content-pagination');
-      this.pagination.insertAdjacentHTML('afterbegin', "\n            <button offset class=\"catalog-pagination__btn prev\">Prev page</button>\n            <span class=\"catalog-pagination__pages\">\n                ".concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(this.getLastPage(), "\n            </span>\n            <button offset class=\"catalog-pagination__btn next\">Next Page</button>\n        "));
+      this.pagination.insertAdjacentHTML('afterbegin', "\n            ".concat(localStorage.getItem('page') != this.getLastPage() ? "<button offset class=\"btn catalog-pagination__btn\">\n                      <span class=\"more material-icons\">\n                        cached\n                      </span>\n                      <span>\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0435\u0449\u0435</span>\n                   </button>" : "&nbsp;", "\n            <span class=\"catalog-pagination__pages\">\n              ").concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(this.getLastPage(), "\n            </span>\n        "));
       this.$catalog.appendChild(this.pagination);
-      this.paginationButtons = this.pagination.querySelectorAll('.catalog-pagination__btn');
-      this.paginationButtons.forEach(function (btn) {
-        btn.addEventListener('click', _this2.changePage.bind(_this2));
-      });
+      this.paginationButton = this.pagination.querySelector('.catalog-pagination__btn');
+
+      if (this.paginationButton) {
+        this.paginationButton.addEventListener('click', this.changePage.bind(this));
+      }
     }
   }, {
     key: "getComponents",
     value: function getComponents() {
-      this.offset = this.page === 1 ? 0 : (this.page - 1) * this.show;
-      this.emit('getComponents', this.offset);
+      this.limit = this.page === 1 ? this.show : this.page * this.show;
+      this.emit('getComponents', this.limit);
     }
   }, {
     key: "changePage",
-    value: function changePage(event) {
-      var btn = event.target;
-
-      if (btn.classList.contains('next')) {
-        if (localStorage.getItem('page') < this.getLastPage()) {
-          this.page = Number(localStorage.getItem('page')) + 1;
-          localStorage.setItem('page', this.page);
-        } else {
-          this.page = 1;
-          localStorage.setItem('page', this.page);
-        }
+    value: function changePage() {
+      if (localStorage.getItem('page') < this.getLastPage()) {
+        this.page = Number(localStorage.getItem('page')) + 1;
+        localStorage.setItem('page', this.page);
       } else {
-        if (localStorage.getItem('page') == 1) {
-          this.page = this.getLastPage();
-          localStorage.setItem('page', this.page);
-        } else {
-          this.page = Number(localStorage.getItem('page')) - 1;
-          localStorage.setItem('page', this.page);
-        }
+        this.page = 1;
+        localStorage.setItem('page', this.page);
       }
 
       this.getComponents();
@@ -11356,14 +11401,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Main = function Main() {
   _classCallCheck(this, Main);
 
-  localStorage.setItem('page', 1);
-  new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]('.admin-panel', {
-    ajaxURL: '../modules/Component.php'
-  });
+  localStorage.setItem('page', '1');
   new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.catalog-content', {
     showComponents: 6,
     imagesPath: 'images',
     ajaxURL: 'modules/Component.php'
+  });
+  new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]('.admin-panel', {
+    ajaxURL: '../modules/Component.php'
   });
 };
 

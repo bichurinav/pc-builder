@@ -13,7 +13,6 @@ class Component
         $this->DB = $DB;
         $this->action = $arData['action'];
         $this->component = $arData['component'];
-        $this->offset = ($arData['offset']) ? $arData['offset'] : 0;
         $this->limit = ($arData['limit']) ? $arData['limit'] : 0;
         $this->imagesPath = '../images';
         unset($arData['action']);
@@ -23,7 +22,8 @@ class Component
 
 
 
-    public function Add() {
+    public function Add()
+    {
 
         // Проверяет значения на пустоту
         function checkEmptyVal($el) {
@@ -72,10 +72,17 @@ class Component
         }
     }
 
+    public function Remove()
+    {
+         $name = $this->params['cardName'];
+         $res = $this->DB->query("DELETE FROM $this->component WHERE name = '$name'");
+         if ($res) {
+            echo $this->component;
+         }
+    }
 
-
-    public function Load() {
-
+    public function Load()
+    {
         // Удаляем неиспользуемые изображения в папке
         function removeUnusedImages($component, $db) {
             $arImagesFromDB = [];
@@ -101,7 +108,7 @@ class Component
 
         removeUnusedImages($this->component, $this->DB);
 
-        if ($output_components = $this->DB->query("SELECT * FROM `$this->component` LIMIT $this->limit OFFSET $this->offset")) {
+        if ($output_components = $this->DB->query("SELECT * FROM `$this->component` LIMIT $this->limit")) {
             while($row = $output_components->fetch_assoc()) {
                 $arResult = json_decode($row['params'], true);
                 $arResult['id'] = $row['id'];
@@ -130,6 +137,9 @@ switch ($component->action) {
         break;
     case 'load':
         $component->Load();
+        break;
+    case 'remove':
+        $component->Remove();
         break;
     default:
         return;

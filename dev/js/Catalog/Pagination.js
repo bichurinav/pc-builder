@@ -6,51 +6,46 @@ class Pagination extends EventEmitter {
         this.count = options.count;
         this.show = options.show;
         this.$catalog = options.catalog;
-        this.offset = 0;
     }
 
     render() {
         this.pagination = document.createElement('div');
         this.pagination.classList.add('catalog-content-pagination');
         this.pagination.insertAdjacentHTML('afterbegin', `
-            <button offset class="catalog-pagination__btn prev">Prev page</button>
+            ${localStorage.getItem('page') != this.getLastPage()
+                ? `<button offset class="btn catalog-pagination__btn">
+                      <span class="more material-icons">
+                        cached
+                      </span>
+                      <span>Загрузить еще</span>
+                   </button>`
+                : `&nbsp;`
+            }
             <span class="catalog-pagination__pages">
-                ${localStorage.getItem('page')} из ${this.getLastPage()}
+              ${localStorage.getItem('page')} из ${this.getLastPage()}
             </span>
-            <button offset class="catalog-pagination__btn next">Next Page</button>
         `);
 
         this.$catalog.appendChild(this.pagination);
 
-        this.paginationButtons = this.pagination.querySelectorAll('.catalog-pagination__btn');
-        this.paginationButtons.forEach((btn) => {
-            btn.addEventListener('click', this.changePage.bind(this))
-        })
+        this.paginationButton = this.pagination.querySelector('.catalog-pagination__btn');
+        if (this.paginationButton) {
+            this.paginationButton.addEventListener('click', this.changePage.bind(this))
+        }
     }
 
     getComponents() {
-        this.offset = this.page === 1 ? 0 : (this.page - 1) * this.show
-        this.emit('getComponents', this.offset)
+        this.limit = this.page === 1 ? this.show : this.page * this.show
+        this.emit('getComponents', this.limit)
     }
 
-    changePage(event) {
-        const btn = event.target
-        if (btn.classList.contains('next')) {
-            if (localStorage.getItem('page') < this.getLastPage()) {
-                this.page = Number(localStorage.getItem('page')) + 1
-                localStorage.setItem('page', this.page)
-            } else {
-                this.page = 1
-                localStorage.setItem('page', this.page)
-            }
+    changePage() {
+        if (localStorage.getItem('page') < this.getLastPage()) {
+            this.page = Number(localStorage.getItem('page')) + 1
+            localStorage.setItem('page', this.page)
         } else {
-            if (localStorage.getItem('page') == 1) {
-                this.page = this.getLastPage()
-                localStorage.setItem('page', this.page)
-            } else {
-                this.page = Number(localStorage.getItem('page')) - 1
-                localStorage.setItem('page', this.page)
-            }
+            this.page = 1
+            localStorage.setItem('page', this.page)
         }
         this.getComponents()
     }

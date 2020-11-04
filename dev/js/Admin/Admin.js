@@ -5,7 +5,7 @@ class Admin {
         this.$el = document.querySelector(selector)
         this.ajaxURL = options.ajaxURL
         if (this.$el) {
-            this.add = new Add(this.$el, this.ajaxURL);
+            new Add(this.$el, this.ajaxURL);
         }
     }
 }

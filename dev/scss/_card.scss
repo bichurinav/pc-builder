@@ -42,7 +42,6 @@
         &-inner {
             position: relative;
             padding: 3px;
-            //height: 100%;
         }
         &-close {
             position: absolute;
@@ -78,6 +77,11 @@
         border-radius: 25px;
         position: relative;
         box-shadow: 0 0px 5px $theme;
+    }
+
+    &__del {
+        display: none;
+        color: rgb(255, 105, 95);
     }
 
     &__btn-more {

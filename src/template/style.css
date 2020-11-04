@@ -163,7 +163,7 @@ ul {
   cursor: pointer; }
 
 .admin-panel {
-  position: relative;
+  position: fixed;
   z-index: 777; }
   .admin-panel_active .admin-panel__inner {
     left: 0;
@@ -235,7 +235,10 @@ ul {
 
 .menu {
   -ms-flex-item-align: start;
-      align-self: flex-start; }
+      align-self: flex-start;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0; }
   .menu__link {
     width: 100%;
     padding: 10px;
@@ -258,7 +261,7 @@ ul {
       -ms-flex-pack: justify;
           justify-content: space-between; }
   .catalog_panelOpen {
-    left: 80px; }
+    left: 150px; }
   .catalog__menu {
     -ms-flex-preferred-size: 19%;
         flex-basis: 19%; }
@@ -292,6 +295,17 @@ ul {
               justify-content: space-between; }
     .catalog-content__item {
       margin-bottom: 15px; }
+  .catalog-pagination__btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .catalog-pagination__btn span {
+      margin-right: 3px; }
+    .catalog-pagination__btn .more {
+      color: #2196F3; }
 
 .card {
   -ms-flex-preferred-size: 49%;
@@ -385,6 +399,9 @@ ul {
     position: relative;
     -webkit-box-shadow: 0 0px 5px #2196F3;
             box-shadow: 0 0px 5px #2196F3; }
+  .card__del {
+    display: none;
+    color: #ff695f; }
   .card__btn-more {
     color: #2196F3;
     font-size: 14px;

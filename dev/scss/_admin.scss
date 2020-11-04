@@ -1,5 +1,5 @@
 .admin-panel {
-    position: relative;
+    position: fixed;
     z-index: 777;
     &_active {
         .admin-panel__inner {

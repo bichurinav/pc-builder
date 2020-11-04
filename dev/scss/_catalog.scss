@@ -3,7 +3,7 @@
     position: relative;
     justify-content: space-between;
     &_panelOpen {
-        left: 80px;
+        left: 150px;
     }
     &__menu {
         flex-basis: 19%;
@@ -25,6 +25,17 @@
         }
         &__item {
             margin-bottom: 15px;
+        }
+    }
+
+    &-pagination__btn {
+        display: flex;
+        align-items: center;
+        & span {
+            margin-right: 3px;
+        }
+        & .more {
+            color: $theme;
         }
     }
 }

@@ -10,7 +10,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "events": "^3.2.0",
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "stickyfilljs": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
