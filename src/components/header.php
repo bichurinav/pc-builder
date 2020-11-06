@@ -18,9 +18,27 @@
         ?>
          <div class="page">
             <header class="page__header header">
-            <div class="container">
-                    <h1>Header</h1>
-            </div>
+                <div class="container">
+                    <div class="header__inner">
+                        <? /* <a href="/" class="header__logo logo">
+                            <img src="./images/logo.svg" alt="" class="logo__img">
+                        </a>
+                        <?if ($_SESSION['admin']):?>
+                            <a href="/exit.php" class="header__btn-exit">  
+                                <span class="auth-icon material-icons">
+                                    directions_run
+                                </span>
+                            </a>
+                        <?else:?>
+                            <button class="button header__btn-auth">
+                                <span class="auth-icon material-icons">
+                                    login
+                                </span>
+                            </button>
+                        <?endif?>
+                            */?>
+                    </div>
+                </div>
             </header>
             <main class="page__content content">
                 <div class="content__container container">

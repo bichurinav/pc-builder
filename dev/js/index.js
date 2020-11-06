@@ -7,7 +7,7 @@ class Main {
     constructor() {
         localStorage.setItem('page', '1');
 
-        new Catalog('.catalog-content', {
+        new Catalog('.cards', {
             showComponents: 6,
             imagesPath: 'images',
             ajaxURL: 'modules/Component.php'

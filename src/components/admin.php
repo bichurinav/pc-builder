@@ -18,7 +18,7 @@
                     <div class="form-add-component__body">
                         <?$fields = $arrComponentList[$_GET['component']]['params'];?>
                         <?foreach($fields as $name => $field):?>
-                            <label class="field line" for="field_<?=$name?>">
+                            <label class="field rounded" for="field_<?=$name?>">
                                 <span class="field__title"><?=$field['title']?></span>
                                 <input id="field_<?=$name?>" class="field__input"
                                  name="<?=$name?>" data-index="<?=$field['pos']?>" placeholder="<?=$field['title']?>" type="<?=$field['type']?>">
@@ -33,7 +33,7 @@
                             </label>
                         </div>
                         <!-- ./upload-file (image) -->
-                        <button class="btn form-add-component__btn">
+                        <button class="button form-add-component__btn">
                             Добавить <?=$arrComponentList[$_GET['component']]['genetive']?>
                         </button>
                         <!-- ./form-add-component__btn -->

@@ -13,7 +13,7 @@ class Pagination extends EventEmitter {
         this.pagination.classList.add('catalog-content-pagination');
         this.pagination.insertAdjacentHTML('afterbegin', `
             ${localStorage.getItem('page') != this.getLastPage()
-                ? `<button offset class="btn catalog-pagination__btn">
+                ? `<button offset class="button catalog-pagination__btn">
                       <span class="more material-icons">
                         cached
                       </span>
@@ -32,6 +32,7 @@ class Pagination extends EventEmitter {
         if (this.paginationButton) {
             this.paginationButton.addEventListener('click', this.changePage.bind(this))
         }
+
     }
 
     getComponents() {

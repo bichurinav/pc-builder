@@ -1,0 +1,24 @@
+.collector-btn {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    &__count {
+        position: absolute;
+        padding-right: 0 !important;
+        right: 4px;
+        top: 2px;
+        box-shadow: 0 0px 5px $theme;
+        width: 15px;
+        height: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        font-size: 15px;
+        color: $theme;
+        background: #fff;
+        font-weight: bold;
+    }
+
+}

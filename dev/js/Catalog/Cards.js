@@ -12,6 +12,7 @@ class Cards extends EventEmitter {
         this.show = options.show
         this.imagesPath = options.imagesPath
         this.ajaxURL = options.ajaxURL
+        this.filter = options.filter
         this.pagination = new Pagination({
             count: this.count,
             show: this.show,
@@ -20,15 +21,18 @@ class Cards extends EventEmitter {
     }
 
     render() {
-        if (this.components) {
+        if (Array.isArray(this.components)) {
             this.components = this.components.map((component, index) => {
-                let params = []
-                for (let key in component) {
-                    if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
-                        params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${component[key]}</div>`);
+                const params = JSON.parse(component['params']);
+                
+                let $params = []
+                for (let key in params) {
+                    if (key !== 'Цена') {
+                        $params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${params[key]}</div>`);
                     }
                 }
-                const previewParams = params.filter((el, i) => i <= 2)
+
+                const previewParams = $params.filter((el, i) => i <= 2)
                 return `
                 <div class="card catalog-content__item">
                     <div class="card__img">
@@ -38,25 +42,25 @@ class Cards extends EventEmitter {
                         <h2 class="card__title">${component['name']}</h2>
                         <div class="card__preview-props">
                              ${previewParams.join('')}
-                            <button class="btn card__btn-more">
+                            <button class="button card__btn-more">
                                 ${screen.width < 450 ? 'Характеристики' : 'Все характеристики'}
                             </button>
                         </div>
                         <span class="card__price">
-                            &asymp; ${changeFormatPrice(component['Цена'])}
+                            &asymp; ${changeFormatPrice(params['Цена'], '₽')}
                         </span>
                     </div>
-                    <button class="btn card__btn-box">
+                    <button class="button card__btn-box">
                         <img src="${this.imagesPath}/box.svg">
                     </button>
                     <div class="card__props">
                         <div class="card__props-inner">
-                            ${params.join('')}
+                            ${$params.join('')}
                             
                         </div>
-                        <button class="btn card__props-close">&#10006;</button>
+                        <button class="button card__props-close">&#10006;</button>
                     </div>
-                    <button class="btn card__del">
+                    <button class="button card__del">
                         <span class="material-icons">
                             backspace
                         </span>
@@ -92,10 +96,13 @@ class Cards extends EventEmitter {
             new Delete('.card__del', this.ajaxURL);
         }
 
-        if (this.count > this.show) {
-            this.pagination.render()
-            this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset))
+        if (!this.filter) {
+            if (this.count > this.show) {
+                this.pagination.render()
+                this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset))
+            }
         }
+        
     }
 
     showProps(event) {

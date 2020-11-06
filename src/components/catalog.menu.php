@@ -2,11 +2,12 @@
     <ul class="menu__inner">
         <?foreach($arrComponentList as $key => $item):?>
             <li class="menu__item">
-                <?if ($key === $_GET['component']):?>
-                    <a href="/?component=<?=$key?>" class="menu__link menu__link_active"><?=$item['name']?></a>
-                <?else:?>
-                    <a href="/?component=<?=$key?>" class="menu__link menu__link"><?=$item['name']?></a>
-                <?endif?>
+                <a href="/?component=<?=$key?>" 
+                data-genetive="<?=$item['genetive']?>" class="menu__link 
+                <?=($key === $_GET['component']) ? "menu__link_active" : "" ?>">
+                    <img class="menu__icon" src="./images/menu/<?=$key?>.svg" alt="">    
+                    <?=$item['name']?>
+                </a>
             </li>
         <?endforeach?>
     </ul>

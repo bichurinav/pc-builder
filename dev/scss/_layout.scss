@@ -1,5 +1,6 @@
 $theme: #2196F3;
 $shadow: #6dc0ff;
+$light: #90CBF9;
 $container: 1170px;
 $font: '';
 
@@ -11,7 +12,7 @@ $font: '';
 
 body {
     color: #222;
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -24,6 +25,11 @@ ul {
 
 .page {
     position: relative;
+
+    &__header {
+        margin: 5px
+    }
+
     &_left {
         animation: pageLeft .2s alternate ease-in forwards;
     }
@@ -32,26 +38,6 @@ ul {
         animation: pageNormal.2s alternate ease-in forwards;
     }
 }
-
-.btn {
-    border: none;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
-    transition: all .2s;
-    &_primary {
-        background: $theme;
-        color: #fff;
-        height: 30px;
-        padding: 0 25px;
-        border-radius: 50px;
-        box-shadow: 1px 4px 0 #1976d2;
-    }
-    &:hover {
-        opacity: .8;
-    }
-}
-
 
 .container {
     width: $container;

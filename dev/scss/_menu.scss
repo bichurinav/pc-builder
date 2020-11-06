@@ -2,17 +2,35 @@
     align-self: flex-start;
     position: sticky;
     top: 0;
+    // &__inner {
+    //     padding-top: 6px;
+    
+    // }
+
+    &__icon {
+        margin-right: 5px;
+        width: 28px;
+        height: 28px;
+        filter: contrast(1)
+    }
+
     &__link {
         width: 100%;
         padding: 10px;
         margin-bottom: 4px;
         border-radius: 8px;
-        display: inline-block;
+        display: flex;
+        align-items: center;
         box-shadow: 0 0 10px $shadow;
+        font-size: 16px;
         color: $theme;
         &_active {
             background: $theme;
             color: #fff;
+            & > img {
+                filter: contrast(10)
+            }
         }
     }
+
 }

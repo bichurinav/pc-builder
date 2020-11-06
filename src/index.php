@@ -1,23 +1,18 @@
-<?session_start()?>
 <?
-if ($_SERVER['REQUEST_URI'] == "/") {
-    header("Location: /?component=cpu", TRUE, 301);
-    exit();
-}
+    session_start();
+
+    if ($_SERVER['REQUEST_URI'] == "/") {
+        header("Location: /?component=cpu", TRUE, 301);
+        exit();
+    }
+
+    require 'config.php';
+    $_SESSION['admin'] = false;
 ?>
 
-<?
-    $_SESSION['admin'] = false
-?>
 
-<?require 'config.php'?>
-<?require MODULES . 'database.php';?>
-
+<!-- COMPONENTS -->
 <?include COMPONENT . 'header.php'?>
-<div class="catalog">
-    <!-- catalog-menu -->
-    <?include COMPONENT . 'catalog.menu.php'?>
-    <!-- catalog-components -->
-    <div class="catalog-content"></div>
-</div>
+<?include COMPONENT . 'catalog.php'?>
 <?include COMPONENT . 'footer.php'?>
+<!-- ./COMPONENTS -->

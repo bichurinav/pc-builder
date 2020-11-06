@@ -46,6 +46,7 @@
         transition: all .3s;
         top: 0;
     }
+
     .form-add-component {
         width: 100%;
         &__form {
@@ -62,6 +63,9 @@
             color: #fff;
             background: $theme;
             box-shadow: 2px 2px 2px $shadow;
+        }
+        select {
+            margin-bottom: 20px;
         }
     }
 }

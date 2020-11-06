@@ -6,23 +6,20 @@ export function findParent(el, parentClass) {
     return parent
 }
 
-export function changeFormatPrice(price) {
-    let value = price.split(' ')[0]
-    let symbol = price.split(' ')[1]
-
+export function changeFormatPrice(price, symbol) {
     function detach(count, firstPart) {
         if (firstPart) {
-            return Array.from(value).filter((item, index) => {
+            return Array.from(price).filter((item, index) => {
                 return index + 1 <= count
             }).join('')
         } else {
-            return Array.from(value).filter((item, index) => {
+            return Array.from(price).filter((item, index) => {
                 return index >= count
             }).join('')
         }
     }
 
-    switch (value.length) {
+    switch (price.length) {
         case 4:
             return `${detach(1, true)} ${detach(1)} ${symbol}`
         case 5:
@@ -30,7 +27,7 @@ export function changeFormatPrice(price) {
         case 6:
             return `${detach(3, true)} ${detach(3)} ${symbol}`
         default:
-            return price
+            return price + ' ' + symbol
     }
 }
 

@@ -11120,6 +11120,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
     _this.show = options.show;
     _this.imagesPath = options.imagesPath;
     _this.ajaxURL = options.ajaxURL;
+    _this.filter = options.filter;
     _this.pagination = new _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"]({
       count: _this.count,
       show: _this.show,
@@ -11133,20 +11134,21 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
     value: function render() {
       var _this2 = this;
 
-      if (this.components) {
+      if (Array.isArray(this.components)) {
         this.components = this.components.map(function (component, index) {
-          var params = [];
+          var params = JSON.parse(component['params']);
+          var $params = [];
 
-          for (var key in component) {
-            if (key !== 'name' && key !== 'id' && key !== 'image' && key !== 'Цена') {
-              params.push("<div class=\"card__prop\"><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(component[key], "</div>"));
+          for (var key in params) {
+            if (key !== 'Цена') {
+              $params.push("<div class=\"card__prop\"><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(params[key], "</div>"));
             }
           }
 
-          var previewParams = params.filter(function (el, i) {
+          var previewParams = $params.filter(function (el, i) {
             return i <= 2;
           });
-          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"btn card__btn-more\">\n                                ").concat(screen.width < 450 ? 'Характеристики' : 'Все характеристики', "\n                            </button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['Цена']), "\n                        </span>\n                    </div>\n                    <button class=\"btn card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat(params.join(''), "\n                            \n                        </div>\n                        <button class=\"btn card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"btn card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"button card__btn-more\">\n                                ").concat(screen.width < 450 ? 'Характеристики' : 'Все характеристики', "\n                            </button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(params['Цена'], '₽'), "\n                        </span>\n                    </div>\n                    <button class=\"button card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat($params.join(''), "\n                            \n                        </div>\n                        <button class=\"button card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"button card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
         }).join('');
       } else {
         this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
@@ -11169,11 +11171,13 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
         new _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_2__["default"]('.card__del', this.ajaxURL);
       }
 
-      if (this.count > this.show) {
-        this.pagination.render();
-        this.pagination.on('getComponents', function (offset) {
-          return _this2.emit('getComponents', offset);
-        });
+      if (!this.filter) {
+        if (this.count > this.show) {
+          this.pagination.render();
+          this.pagination.on('getComponents', function (offset) {
+            return _this2.emit('getComponents', offset);
+          });
+        }
       }
     }
   }, {
@@ -11236,13 +11240,14 @@ var Catalog = /*#__PURE__*/function () {
     this.showComponents = options.showComponents;
     this.imagesPath = options.imagesPath;
     this.delayData = 200;
-    this.optionsCards = {
+    this.cardsOptions = {
       catalog: this.$el,
       imagesPath: this.imagesPath,
       show: this.showComponents,
       getComponents: this.getComponents
     };
-    this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](this.optionsCards);
+    this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](this.cardsOptions);
+    this.search();
     this.getComponents();
   }
 
@@ -11252,10 +11257,16 @@ var Catalog = /*#__PURE__*/function () {
       var _this = this;
 
       var show = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.showComponents;
+      var search = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var body = new FormData();
       body.append('action', 'load');
       body.append('component', Object(_js_utils__WEBPACK_IMPORTED_MODULE_1__["getParamURL"])('component'));
       body.append('limit', show);
+
+      if (search) {
+        body.append('filter', search);
+      }
+
       this.preloader(true);
       var req = fetch(this.ajaxURL, {
         method: 'POST',
@@ -11267,9 +11278,11 @@ var Catalog = /*#__PURE__*/function () {
         setTimeout(function () {
           _this.preloader(false);
 
-          _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.optionsCards), {}, {
+          console.log(data);
+          _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.cardsOptions), {}, {
             cards: data.items,
             count: data.count,
+            filter: data.filter || false,
             ajaxURL: _this.ajaxURL
           }));
 
@@ -11279,12 +11292,47 @@ var Catalog = /*#__PURE__*/function () {
             return _this.getComponents(show);
           });
 
-          document.body.scrollIntoView(false);
+          if (!data.filter) {
+            document.body.scrollIntoView(false);
+          }
         }, _this.delayData);
       }).catch(function () {
         _this.preloader(false);
 
         _this.cards.render();
+      });
+    }
+  }, {
+    key: "search",
+    value: function search() {
+      var _this2 = this;
+
+      this.$formSearch = document.querySelector('#search');
+      this.$search = this.$formSearch.querySelector('.search__input');
+      this.$activeMenuLink = document.querySelector('.menu__link_active');
+      var placeholder = this.$activeMenuLink.dataset['genetive'];
+      this.$search.setAttribute('placeholder', "\u041D\u0430\u0439\u0442\u0438 ".concat(placeholder, "..."));
+      this.$formSearch.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var val = _this2.$search.value;
+
+        if (val !== '') {
+          var str = val.replace(/[^a-zа-я0-9\s]/gi, "");
+
+          if (str.length > 1) {
+            _this2.getComponents(null, str);
+          } else {
+            alert('Ваш запрос содержит менее 2 символов.');
+            return;
+          }
+        }
+      });
+      this.$search.addEventListener('input', function (event) {
+        var val = event.target.value;
+
+        if (val === '') {
+          _this2.getComponents();
+        }
       });
     }
   }, {
@@ -11362,7 +11410,7 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
     value: function render() {
       this.pagination = document.createElement('div');
       this.pagination.classList.add('catalog-content-pagination');
-      this.pagination.insertAdjacentHTML('afterbegin', "\n            ".concat(localStorage.getItem('page') != this.getLastPage() ? "<button offset class=\"btn catalog-pagination__btn\">\n                      <span class=\"more material-icons\">\n                        cached\n                      </span>\n                      <span>\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0435\u0449\u0435</span>\n                   </button>" : "&nbsp;", "\n            <span class=\"catalog-pagination__pages\">\n              ").concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(this.getLastPage(), "\n            </span>\n        "));
+      this.pagination.insertAdjacentHTML('afterbegin', "\n            ".concat(localStorage.getItem('page') != this.getLastPage() ? "<button offset class=\"button catalog-pagination__btn\">\n                      <span class=\"more material-icons\">\n                        cached\n                      </span>\n                      <span>\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0435\u0449\u0435</span>\n                   </button>" : "&nbsp;", "\n            <span class=\"catalog-pagination__pages\">\n              ").concat(localStorage.getItem('page'), " \u0438\u0437 ").concat(this.getLastPage(), "\n            </span>\n        "));
       this.$catalog.appendChild(this.pagination);
       this.paginationButton = this.pagination.querySelector('.catalog-pagination__btn');
 
@@ -11425,7 +11473,7 @@ var Main = function Main() {
   _classCallCheck(this, Main);
 
   localStorage.setItem('page', '1');
-  new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.catalog-content', {
+  new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.cards', {
     showComponents: 6,
     imagesPath: 'images',
     ajaxURL: 'modules/Component.php'
@@ -11460,23 +11508,20 @@ function findParent(el, parentClass) {
 
   return parent;
 }
-function changeFormatPrice(price) {
-  var value = price.split(' ')[0];
-  var symbol = price.split(' ')[1];
-
+function changeFormatPrice(price, symbol) {
   function detach(count, firstPart) {
     if (firstPart) {
-      return Array.from(value).filter(function (item, index) {
+      return Array.from(price).filter(function (item, index) {
         return index + 1 <= count;
       }).join('');
     } else {
-      return Array.from(value).filter(function (item, index) {
+      return Array.from(price).filter(function (item, index) {
         return index >= count;
       }).join('');
     }
   }
 
-  switch (value.length) {
+  switch (price.length) {
     case 4:
       return "".concat(detach(1, true), " ").concat(detach(1), " ").concat(symbol);
 
@@ -11487,7 +11532,7 @@ function changeFormatPrice(price) {
       return "".concat(detach(3, true), " ").concat(detach(3), " ").concat(symbol);
 
     default:
-      return price;
+      return price + ' ' + symbol;
   }
 }
 function getParamURL(key) {

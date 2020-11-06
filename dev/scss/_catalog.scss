@@ -11,7 +11,6 @@
     &-content {
         flex-basis: 79%;
         display: flex;
-        min-height: 400px;
         flex-direction: column;
         @media (max-width: 1023px) {
             flex-basis: 100%;
@@ -29,6 +28,29 @@
         &__item {
             margin-bottom: 15px;
         }
+    }
+
+    &-header {
+        &__inner {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        &__search, &-btn, &__logo, &__btn-filter {
+            margin-right: 10px;
+        }
+    
+        &__logo {
+            position: relative;
+            top: 2px;
+        }
+    
+        &__auth {
+            margin-left: 10px;
+        }
+    
     }
 
     &-pagination__btn {

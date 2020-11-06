@@ -51,7 +51,7 @@ class Component
             }
 
             $name = $this->params['name'];
-            $this->params['Цена'] = $this->params['Цена'] . " ₽";
+            // $this->params['Цена'] = $this->params['Цена'] . " ₽";
             unset($this->params['name']);
             $params = json_encode($this->params, JSON_UNESCAPED_UNICODE);
 
@@ -107,27 +107,59 @@ class Component
         }
 
         removeUnusedImages($this->component, $this->DB);
+        
+        if ($this->params['filter']) {
+            $output_components = $this->DB->query("SELECT * FROM `$this->component`");
+        } else {
+            $output_components = $this->DB->query("SELECT * FROM `$this->component` LIMIT $this->limit");
+        }
 
-        if ($output_components = $this->DB->query("SELECT * FROM `$this->component` LIMIT $this->limit")) {
-            while($row = $output_components->fetch_assoc()) {
-                $arResult = json_decode($row['params'], true);
+        if ($output_components) {
+            while($row = $output_components->fetch_assoc()) {   
+                $arResult['params'] = $row['params'];
                 $arResult['id'] = $row['id'];
                 $arResult['name'] = $row['name'];
                 $arResult['image'] = $row['image'];
                 // Формирование всех компонентов
                 $data['items'][] = $arResult;
             }
+
+            if ($this->params['filter'] && $data['items']) {
+                $filter = array_filter($data['items'], function($el) {
+                    //$arParams = json_decode($el['params'], true);
+                    $search = $this->params['filter'];
+                    
+                    $arr = explode(' ', $search);
+
+                    if (count($arr) > 1) {
+                        foreach($arr as $item) {
+                            if (preg_match("/$item/i", $el['name'])) {
+                                return $el;
+                            } 
+                        }
+                    } else {
+                        return preg_match("/$search/i", $el['name']);
+                    }
+                });
+                
+                $data['items'] = [];
+                $data['filter'] = true;
+
+                foreach($filter as $el) {
+                    $data['items'][] = $el;
+                }
+            }
+
             // Кол-во элементов в таблице (база-данных)
             $countRow = $this->DB->query("SELECT COUNT(*) FROM `$this->component`");
             $data['count'] = mysqli_fetch_array($countRow)[0];
+
             // Отправляем на клиент сформированные компоненты и кол-во элементов в таблице (база-данных)
             echo ($data['items'] && $data['count']) ? json_encode($data) : json_encode(false);
         }
     }
-
-
-
 }
+//file_put_contents(__DIR__ + '/', var_export($filter, true));
 
 $component = new Component($_POST, $mysqli);
 
