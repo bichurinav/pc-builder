@@ -37,20 +37,24 @@
             align-items: center;
             justify-content: space-between;
         }
-    
+
         &__search, &-btn, &__logo, &__btn-filter {
             margin-right: 10px;
         }
-    
+
         &__logo {
             position: relative;
             top: 2px;
         }
-    
-        &__auth {
+
+        &__auth, &__user {
             margin-left: 10px;
         }
-    
+
+        &__user {
+            font-weight: 300;
+        }
+
     }
 
     &-pagination__btn {

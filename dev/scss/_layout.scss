@@ -1,8 +1,9 @@
 $theme: #2196F3;
 $shadow: #6dc0ff;
 $light: #90CBF9;
+$clearBackground: rgba(33, 150, 243, 0.88);
+$error: #ff3131;
 $container: 1170px;
-$font: '';
 
 * {
     margin: 0;
@@ -13,6 +14,7 @@ $font: '';
 body {
     color: #222;
     font-family: 'Roboto', sans-serif;
+    background: rgb(245, 245, 245);
 }
 
 a {

@@ -104,11 +104,25 @@
 
     &__del {
         display: none;
+        align-self: center;
         color: rgb(255, 105, 95);
         @media (max-width: 425px) {
             position: absolute;
             right: 0;
             top: -5px;
+        }
+    }
+
+    &__changePrice {
+        display: none;
+        width: 75px;
+        padding: 2px;
+        border: 1px solid $theme;
+        box-shadow: 0 1px 1px $theme;
+        border-radius: 3px;
+        &:focus {
+            outline: none;
+            box-shadow: 0 0px 5px $theme;
         }
     }
 

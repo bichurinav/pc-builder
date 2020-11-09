@@ -7,7 +7,7 @@
     }
 
     require 'config.php';
-    $_SESSION['admin'] = false;
+
 ?>
 
 

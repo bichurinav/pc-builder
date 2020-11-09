@@ -13,7 +13,7 @@
         outline: none;
     }
     &__error {
-        color: #ff3131;
+        color: $error;
         font-size: 14px;
         margin: 1px 0;
         display: none;

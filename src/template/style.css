@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap);
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +7,8 @@
 
 body {
   color: #222;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Roboto', sans-serif;
+  background: whitesmoke; }
 
 a {
   text-decoration: none; }
@@ -231,6 +232,82 @@ ul {
   -webkit-box-shadow: 0 0 5px #a8a8a8;
           box-shadow: 0 0 5px #a8a8a8;
   cursor: pointer; }
+
+.auth {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background: rgba(33, 150, 243, 0.88);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: -webkit-zoom-out;
+  cursor: zoom-out; }
+  .auth__form {
+    width: 280px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    -webkit-box-shadow: 5px 5px 2px silver;
+            box-shadow: 5px 5px 2px silver;
+    position: relative;
+    cursor: auto; }
+  .auth__close {
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: #2196F3;
+    font-size: 14px; }
+  .auth__error {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ff3131; }
+  .auth__title {
+    margin-bottom: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    color: #2196F3; }
+    .auth__title .auth-icon {
+      margin-right: 5px; }
+  .auth__buttons {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .auth__buttons button {
+      -ms-flex-preferred-size: 50%;
+          flex-basis: 50%;
+      height: 25px;
+      border: 1px solid #2196F3;
+      color: #2196F3; }
+    .auth__buttons > button.active {
+      color: #fff;
+      background: #2196F3;
+      -webkit-box-shadow: 2px 0 5px #2196F3;
+              box-shadow: 2px 0 5px #2196F3; }
+  .auth__btn-auth {
+    border-radius: 10px 0 0 10px; }
+  .auth__btn-reg {
+    border-radius: 0 10px 10px 0; }
 
 .admin-panel {
   position: fixed;
@@ -532,8 +609,10 @@ ul {
   .catalog-header__logo {
     position: relative;
     top: 2px; }
-  .catalog-header__auth {
+  .catalog-header__auth, .catalog-header__user {
     margin-left: 10px; }
+  .catalog-header__user {
+    font-weight: 300; }
   .catalog-pagination__btn {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -659,12 +738,26 @@ ul {
         right: 0; } }
   .card__del {
     display: none;
+    -ms-flex-item-align: center;
+        align-self: center;
     color: #ff695f; }
     @media (max-width: 425px) {
       .card__del {
         position: absolute;
         right: 0;
         top: -5px; } }
+  .card__changePrice {
+    display: none;
+    width: 75px;
+    padding: 2px;
+    border: 1px solid #2196F3;
+    -webkit-box-shadow: 0 1px 1px #2196F3;
+            box-shadow: 0 1px 1px #2196F3;
+    border-radius: 3px; }
+    .card__changePrice:focus {
+      outline: none;
+      -webkit-box-shadow: 0 0px 5px #2196F3;
+              box-shadow: 0 0px 5px #2196F3; }
   .card__btn-more {
     color: #2196F3;
     font-size: 14px;

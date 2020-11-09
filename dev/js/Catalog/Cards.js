@@ -1,6 +1,8 @@
 import {findParent, changeFormatPrice} from "@/js/utils";
+import collectorStore from "@/js/store/collector";
 import Pagination from "@/js/Catalog/Pagination";
 import Delete from "@/js/Admin/Delete";
+import PriceChange from "@/js/Admin/PriceChange";
 import EventEmitter from 'events'
 
 class Cards extends EventEmitter {
@@ -22,14 +24,12 @@ class Cards extends EventEmitter {
 
     render() {
         if (Array.isArray(this.components)) {
-            this.components = this.components.map((component, index) => {
+            this.componentsHTML = this.components.map((component, index) => {
                 const params = JSON.parse(component['params']);
-                
+
                 let $params = []
                 for (let key in params) {
-                    if (key !== 'Цена') {
-                        $params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${params[key]}</div>`);
-                    }
+                    $params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${params[key]}</div>`);
                 }
 
                 const previewParams = $params.filter((el, i) => i <= 2)
@@ -47,7 +47,8 @@ class Cards extends EventEmitter {
                             </button>
                         </div>
                         <span class="card__price">
-                            &asymp; ${changeFormatPrice(params['Цена'], '₽')}
+                            <input class="card__changePrice" type="number" value="${component['price']}"/>
+                            <span>&asymp; ${changeFormatPrice(component['price'], '₽')}</span>
                         </span>
                     </div>
                     <button class="button card__btn-box">
@@ -69,13 +70,13 @@ class Cards extends EventEmitter {
                 `
             }).join('')
         } else {
-            this.components = `<h2>Пусто :(</h2>`
+            this.componentsHTML = `<h2>Пусто :(</h2>`
         }
 
 
         this.$catalog.insertAdjacentHTML('afterbegin', `
             <div class="catalog-content-items">
-                 ${this.components}
+                 ${this.componentsHTML}
             </div>
         `);
 
@@ -92,9 +93,14 @@ class Cards extends EventEmitter {
             btn.addEventListener('click', this.showProps.bind(this))
         })
 
+        // admin action
         if (document.querySelector('.admin-panel')) {
             new Delete('.card__del', this.ajaxURL);
+            new PriceChange('.card__changePrice',
+                '.card__price span', this.ajaxURL);
         }
+
+        this.collectorAction()
 
         if (!this.filter) {
             if (this.count > this.show) {
@@ -102,7 +108,19 @@ class Cards extends EventEmitter {
                 this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset))
             }
         }
-        
+
+    }
+
+    collectorAction() {
+        this.$boxexButtons = document.querySelectorAll('.card__btn-box');
+        this.$boxexButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const parent = findParent(btn, 'card');
+                const name = parent.querySelector('.card__title').textContent;
+                const component = this.components.filter(el => el.name === name)[0]
+                collectorStore.addItem(component)
+            })
+        })
     }
 
     showProps(event) {

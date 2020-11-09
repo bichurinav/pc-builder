@@ -12,7 +12,7 @@
 
         <!-- catalog-menu -->
         <?
-            if ($_SESSION['admin']) {
+            if ($_SESSION['login'] === 'admin') {
                 include COMPONENT . 'admin.php';
             }
         ?>

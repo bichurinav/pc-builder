@@ -78,7 +78,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),
@@ -92,7 +92,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),
@@ -106,7 +106,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),
@@ -120,7 +120,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),
@@ -134,7 +134,7 @@ $arrComponentList = array(
                 'title' => 'Название',
                 'type' => 'text'
             ),
-            'price' => array(
+            'Цена' => array(
                 'title' => 'Цена',
                 'type' => 'number'
             ),

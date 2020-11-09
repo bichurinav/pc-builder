@@ -24,8 +24,10 @@
             <img class="collector-btn__img" src="./images/box.svg" alt="">
         </button>
 
-        <?if ($_SESSION['admin']):?>
-            <a href="/exit.php" class="button_exit catalog-header__auth ">  
+        <div class="catalog-header__user"><?=$_SESSION['login']?></div>
+
+        <?if ($_SESSION['login']):?>
+            <a href="/exit.php" class="button_exit catalog-header__auth ">
                 <span class="auth-icon material-icons">
                     directions_run
                 </span>

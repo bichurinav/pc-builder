@@ -11062,6 +11062,289 @@ var Delete = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./js/Admin/PriceChange.js":
+/*!*********************************!*\
+  !*** ./js/Admin/PriceChange.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./js/utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var PriceChange = /*#__PURE__*/function () {
+  function PriceChange(fields, prices, ajaxURL) {
+    _classCallCheck(this, PriceChange);
+
+    this.$fields = document.querySelectorAll(fields);
+    this.$prices = document.querySelectorAll(prices);
+    this.ajaxURL = ajaxURL;
+    this.action = 'changePrice';
+    this.init();
+  }
+
+  _createClass(PriceChange, [{
+    key: "init",
+    value: function init() {
+      for (var i = 0; i < this.$prices.length; i++) {
+        this.$fields[i].style.display = "inline";
+        this.$prices[i].style.display = "none";
+        this.addEventListener(this.$fields[i]);
+      }
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener(field) {
+      field.addEventListener('change', this.changePrice.bind(this));
+    }
+  }, {
+    key: "changePrice",
+    value: function changePrice(event) {
+      var val = event.target.value;
+
+      if (val && val !== '0' && val.length < 7) {
+        var parent = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(event.target, 'card');
+        var name = parent.querySelector('.card__title').textContent;
+        console.log(name);
+        var body = new FormData();
+        body.append('action', this.action);
+        body.append('component', Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getParamURL"])('component'));
+        body.append('newPrice', val);
+        body.append('name', name);
+        var req = fetch(this.ajaxURL, {
+          method: 'POST',
+          body: body
+        });
+        req.then(function (data) {
+          return data.text();
+        }).then(function (data) {
+          document.location.href = "/?component=".concat(data);
+        });
+        req.catch(function (err) {
+          console.log(err);
+        });
+      } else {
+        return;
+      }
+    }
+  }]);
+
+  return PriceChange;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (PriceChange);
+
+/***/ }),
+
+/***/ "./js/Auth/Auth.js":
+/*!*************************!*\
+  !*** ./js/Auth/Auth.js ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Auth = /*#__PURE__*/function () {
+  function Auth(selector, options) {
+    _classCallCheck(this, Auth);
+
+    this.selector = selector;
+    this.$parent = document.querySelector(options.parent);
+    this.$buttonActivate = document.querySelector(options.buttonActivate);
+    this.action = 'auth';
+    this.auth = 'auth';
+    this.ajaxURL = options.ajaxURL;
+    this.init();
+  }
+
+  _createClass(Auth, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      if (this.$buttonActivate) {
+        this.$buttonActivate.addEventListener('click', function () {
+          _this.render();
+        });
+        document.body.addEventListener('click', function (event) {
+          var el = event.target;
+
+          if (el.className === _this.selector || el.className === "button ".concat(_this.selector, "__close")) {
+            _this.clear();
+          }
+        });
+      }
+    }
+  }, {
+    key: "getTemplate",
+    value: function getTemplate(auth) {
+      if (auth === 'auth') {
+        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <button class=\"button ").concat(this.selector, "__close\">\n                    \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                </button>\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        login\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth active\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
+      } else {
+        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <button class=\"button ").concat(this.selector, "__close\">\n                        \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                    </button>\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        assignment_ind\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u0432\u0442\u043E\u0440\u043D\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password2\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg active\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.$auth = document.createElement('div');
+      this.$auth.classList.add(this.selector);
+      this.$auth.innerHTML = this.getTemplate(this.auth);
+      this.$parent.insertAdjacentElement('afterBegin', this.$auth);
+      this.addEventListener();
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener() {
+      var _this2 = this;
+
+      this.$form = document.querySelector(".".concat(this.selector, "__form"));
+      this.$login = document.querySelector('input[name="login"]');
+      this.$password = document.querySelector('input[name="password"]');
+
+      if (this.auth === 'reg') {
+        this.$password2 = document.querySelector('input[name="password2"]');
+      }
+
+      this.$buttonsAuth = document.querySelectorAll(".".concat(this.selector, "__buttons button"));
+      this.$buttonsAuth.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (_this2.auth === btn.dataset['auth']) {
+            if (_this2.isValid()) _this2.ajaxAuth(_this2.auth);
+          } else {
+            _this2.auth = btn.dataset['auth'];
+            _this2.$auth.innerHTML = _this2.getTemplate(_this2.auth);
+
+            _this2.addEventListener();
+          }
+        });
+      });
+    }
+  }, {
+    key: "isValid",
+    value: function isValid() {
+      var _this3 = this;
+
+      var invalid = [];
+      var inputs = this.$form.querySelectorAll('input');
+      inputs.forEach(function (input) {
+        var errorEl = input.nextElementSibling;
+
+        function clearError() {
+          errorEl.style.display = 'none';
+          errorEl.textContent = '';
+        }
+
+        if (input.value === '') {
+          errorEl.style.display = 'block';
+          errorEl.textContent = 'Введите значение';
+          invalid.push(input);
+        } else {
+          clearError();
+
+          if (input.name === 'login') {
+            if (input.value.length < 3 || input.value.length > 11) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'От 3 до 11 символов';
+              invalid.push(input);
+            } else if (!/^[a-z]+([-_]?[a-z0-9]+){0,2}$/i.test(input.value)) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'Недопустимый формат';
+              invalid.push(input);
+            } else {
+              clearError();
+            }
+          }
+
+          if (input.name === 'password') {
+            if (input.value.length < 4 || input.value.length > 20) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'От 4 до 20 символов';
+              invalid.push(input);
+            } else if (/[<>()[]]/i.test(input.value)) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'Недопустимый формат';
+              invalid.push(input);
+            } else {
+              clearError();
+            }
+          }
+
+          if (input.name === 'password2') {
+            if (input.value !== _this3.$password.value) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'Не совпадает';
+              invalid.push(input);
+            } else {
+              clearError();
+            }
+          }
+        }
+      });
+      return !invalid.length;
+    }
+  }, {
+    key: "ajaxAuth",
+    value: function ajaxAuth(auth) {
+      var _this4 = this;
+
+      var body = new FormData();
+      body.append('action', this.action);
+      body.append('type', this.auth);
+      body.append('login', this.$login.value);
+      body.append('password', this.$password.value);
+
+      if (this.$password2) {
+        body.append('password2', this.$password2.value);
+      }
+
+      var req = fetch(this.ajaxURL, {
+        method: 'POST',
+        body: body
+      });
+      req.then(function (data) {
+        return data.text();
+      }).then(function (data) {
+        if (data === 'auth') {
+          document.location.href = "/";
+        } else {
+          var $authError = document.querySelector(".".concat(_this4.selector, "__error"));
+          $authError.textContent = data;
+        }
+      });
+      req.catch(function (err) {
+        console.log(err);
+      });
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.$auth.remove();
+    }
+  }]);
+
+  return Auth;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Auth);
+
+/***/ }),
+
 /***/ "./js/Catalog/Cards.js":
 /*!*****************************!*\
   !*** ./js/Catalog/Cards.js ***!
@@ -11072,10 +11355,12 @@ var Delete = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
-/* harmony import */ var _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Pagination */ "./js/Catalog/Pagination.js");
-/* harmony import */ var _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/Admin/Delete */ "./js/Admin/Delete.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _js_store_collector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/store/collector */ "./js/store/collector.js");
+/* harmony import */ var _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/Catalog/Pagination */ "./js/Catalog/Pagination.js");
+/* harmony import */ var _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/js/Admin/Delete */ "./js/Admin/Delete.js");
+/* harmony import */ var _js_Admin_PriceChange__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/js/Admin/PriceChange */ "./js/Admin/PriceChange.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11103,6 +11388,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
 var Cards = /*#__PURE__*/function (_EventEmitter) {
   _inherits(Cards, _EventEmitter);
 
@@ -11121,7 +11408,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
     _this.imagesPath = options.imagesPath;
     _this.ajaxURL = options.ajaxURL;
     _this.filter = options.filter;
-    _this.pagination = new _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    _this.pagination = new _js_Catalog_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"]({
       count: _this.count,
       show: _this.show,
       catalog: _this.$catalog
@@ -11135,26 +11422,24 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
       var _this2 = this;
 
       if (Array.isArray(this.components)) {
-        this.components = this.components.map(function (component, index) {
+        this.componentsHTML = this.components.map(function (component, index) {
           var params = JSON.parse(component['params']);
           var $params = [];
 
           for (var key in params) {
-            if (key !== 'Цена') {
-              $params.push("<div class=\"card__prop\"><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(params[key], "</div>"));
-            }
+            $params.push("<div class=\"card__prop\"><b>".concat(key.replaceAll('_', ' '), "</b>: ").concat(params[key], "</div>"));
           }
 
           var previewParams = $params.filter(function (el, i) {
             return i <= 2;
           });
-          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"button card__btn-more\">\n                                ").concat(screen.width < 450 ? 'Характеристики' : 'Все характеристики', "\n                            </button>\n                        </div>\n                        <span class=\"card__price\">\n                            &asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(params['Цена'], '₽'), "\n                        </span>\n                    </div>\n                    <button class=\"button card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat($params.join(''), "\n                            \n                        </div>\n                        <button class=\"button card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"button card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
+          return "\n                <div class=\"card catalog-content__item\">\n                    <div class=\"card__img\">\n                        <img width=\"100\" src=\"".concat(component['image'], "\">\n                    </div>\n                    <div class=\"card__content\">\n                        <h2 class=\"card__title\">").concat(component['name'], "</h2>\n                        <div class=\"card__preview-props\">\n                             ").concat(previewParams.join(''), "\n                            <button class=\"button card__btn-more\">\n                                ").concat(screen.width < 450 ? 'Характеристики' : 'Все характеристики', "\n                            </button>\n                        </div>\n                        <span class=\"card__price\">\n                            <input class=\"card__changePrice\" type=\"number\" value=\"").concat(component['price'], "\"/>\n                            <span>&asymp; ").concat(Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["changeFormatPrice"])(component['price'], '₽'), "</span>\n                        </span>\n                    </div>\n                    <button class=\"button card__btn-box\">\n                        <img src=\"").concat(_this2.imagesPath, "/box.svg\">\n                    </button>\n                    <div class=\"card__props\">\n                        <div class=\"card__props-inner\">\n                            ").concat($params.join(''), "\n                            \n                        </div>\n                        <button class=\"button card__props-close\">&#10006;</button>\n                    </div>\n                    <button class=\"button card__del\">\n                        <span class=\"material-icons\">\n                            backspace\n                        </span>\n                    </button>\n                </div>\n                ");
         }).join('');
       } else {
-        this.components = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
+        this.componentsHTML = "<h2>\u041F\u0443\u0441\u0442\u043E :(</h2>";
       }
 
-      this.$catalog.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\">\n                 ".concat(this.components, "\n            </div>\n        "));
+      this.$catalog.insertAdjacentHTML('afterbegin', "\n            <div class=\"catalog-content-items\">\n                 ".concat(this.componentsHTML, "\n            </div>\n        "));
       window.addEventListener('resize', function () {
         var moreButtons = document.querySelectorAll('.card__btn-more');
         moreButtons.forEach(function (btn) {
@@ -11165,11 +11450,14 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
       this.btnsProps = document.querySelectorAll('.card__btn-more');
       this.btnsProps.forEach(function (btn) {
         btn.addEventListener('click', _this2.showProps.bind(_this2));
-      });
+      }); // admin action
 
       if (document.querySelector('.admin-panel')) {
-        new _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_2__["default"]('.card__del', this.ajaxURL);
+        new _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_3__["default"]('.card__del', this.ajaxURL);
+        new _js_Admin_PriceChange__WEBPACK_IMPORTED_MODULE_4__["default"]('.card__changePrice', '.card__price span', this.ajaxURL);
       }
+
+      this.collectorAction();
 
       if (!this.filter) {
         if (this.count > this.show) {
@@ -11179,6 +11467,25 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
           });
         }
       }
+    }
+  }, {
+    key: "collectorAction",
+    value: function collectorAction() {
+      var _this3 = this;
+
+      this.$boxexButtons = document.querySelectorAll('.card__btn-box');
+      this.$boxexButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var parent = Object(_js_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(btn, 'card');
+          var name = parent.querySelector('.card__title').textContent;
+
+          var component = _this3.components.filter(function (el) {
+            return el.name === name;
+          })[0];
+
+          _js_store_collector__WEBPACK_IMPORTED_MODULE_1__["default"].addItem(component);
+        });
+      });
     }
   }, {
     key: "showProps",
@@ -11199,7 +11506,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
   }]);
 
   return Cards;
-}(events__WEBPACK_IMPORTED_MODULE_3___default.a);
+}(events__WEBPACK_IMPORTED_MODULE_5___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = (Cards);
 
@@ -11247,8 +11554,8 @@ var Catalog = /*#__PURE__*/function () {
       getComponents: this.getComponents
     };
     this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](this.cardsOptions);
-    this.search();
     this.getComponents();
+    this.search();
   }
 
   _createClass(Catalog, [{
@@ -11264,7 +11571,7 @@ var Catalog = /*#__PURE__*/function () {
       body.append('limit', show);
 
       if (search) {
-        body.append('filter', search);
+        body.append('search', search);
       }
 
       this.preloader(true);
@@ -11276,9 +11583,9 @@ var Catalog = /*#__PURE__*/function () {
         return data.json();
       }).then(function (data) {
         setTimeout(function () {
-          _this.preloader(false);
+          _this.preloader(false); // console.log(data);
 
-          console.log(data);
+
           _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.cardsOptions), {}, {
             cards: data.items,
             count: data.count,
@@ -11307,33 +11614,35 @@ var Catalog = /*#__PURE__*/function () {
     value: function search() {
       var _this2 = this;
 
-      this.$formSearch = document.querySelector('#search');
-      this.$search = this.$formSearch.querySelector('.search__input');
-      this.$activeMenuLink = document.querySelector('.menu__link_active');
-      var placeholder = this.$activeMenuLink.dataset['genetive'];
-      this.$search.setAttribute('placeholder', "\u041D\u0430\u0439\u0442\u0438 ".concat(placeholder, "..."));
-      this.$formSearch.addEventListener('submit', function (event) {
-        event.preventDefault();
-        var val = _this2.$search.value;
+      if (document.querySelector('.menu__link_active')) {
+        this.$formSearch = document.querySelector('#search');
+        this.$search = this.$formSearch.querySelector('.search__input');
+        this.$activeMenuLink = document.querySelector('.menu__link_active');
+        var placeholder = this.$activeMenuLink.dataset['genetive'];
+        this.$search.setAttribute('placeholder', "\u041D\u0430\u0439\u0442\u0438 ".concat(placeholder, "..."));
+        this.$formSearch.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var val = _this2.$search.value;
 
-        if (val !== '') {
-          var str = val.replace(/[^a-zа-я0-9\s]/gi, "");
+          if (val !== '') {
+            var str = val.replace(/[^a-zа-я0-9\s]/gi, "");
 
-          if (str.length > 1) {
-            _this2.getComponents(null, str);
-          } else {
-            alert('Ваш запрос содержит менее 2 символов.');
-            return;
+            if (str.length > 1) {
+              _this2.getComponents(null, str);
+            } else {
+              alert('Ваш запрос содержит менее 2 символов.');
+              return;
+            }
           }
-        }
-      });
-      this.$search.addEventListener('input', function (event) {
-        var val = event.target.value;
+        });
+        this.$search.addEventListener('input', function (event) {
+          var val = event.target.value;
 
-        if (val === '') {
-          _this2.getComponents();
-        }
-      });
+          if (val === '') {
+            _this2.getComponents();
+          }
+        });
+      }
     }
   }, {
     key: "preloader",
@@ -11451,6 +11760,31 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
 
 /***/ }),
 
+/***/ "./js/Collector/Collector.js":
+/*!***********************************!*\
+  !*** ./js/Collector/Collector.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _js_store_collector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/store/collector */ "./js/store/collector.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var Collector = function Collector() {
+  _classCallCheck(this, Collector);
+
+  this.$counter = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].$counter;
+  this.$counter.textContent = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Collector);
+
+/***/ }),
+
 /***/ "./js/index.js":
 /*!*********************!*\
   !*** ./js/index.js ***!
@@ -11462,8 +11796,12 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Admin/Admin */ "./js/Admin/Admin.js");
 /* harmony import */ var _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Catalog */ "./js/Catalog/Catalog.js");
-/* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/scss/style.scss */ "./scss/style.scss");
+/* harmony import */ var _js_Auth_Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/Auth/Auth */ "./js/Auth/Auth.js");
+/* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/scss/style.scss */ "./scss/style.scss");
+/* harmony import */ var _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/js/Collector/Collector */ "./js/Collector/Collector.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
 
 
 
@@ -11478,12 +11816,65 @@ var Main = function Main() {
     imagesPath: 'images',
     ajaxURL: 'modules/Component.php'
   });
+  new _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__["default"]();
+  new _js_Auth_Auth__WEBPACK_IMPORTED_MODULE_2__["default"]('auth', {
+    buttonActivate: '.button_auth',
+    parent: '.page',
+    ajaxURL: 'modules/Component.php'
+  });
   new _Admin_Admin__WEBPACK_IMPORTED_MODULE_0__["default"]('.admin-panel', {
     ajaxURL: '../modules/Component.php'
   });
 };
 
 new Main();
+
+/***/ }),
+
+/***/ "./js/store/collector.js":
+/*!*******************************!*\
+  !*** ./js/store/collector.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var collectorStore = {
+  $counter: document.querySelector('.collector-btn__count'),
+  component: document.querySelector('.menu__link_active').textContent,
+  count: sessionStorage.getItem('count') || 0,
+  getItems: function getItems() {
+    return JSON.parse(sessionStorage.getItem('components')) || [];
+  },
+  addItem: function addItem(item) {
+    var isReorderComponent = this.getItems().filter(function (el) {
+      return el.component === item.component;
+    }).length;
+
+    if (!isReorderComponent) {
+      sessionStorage.setItem('components', JSON.stringify([].concat(_toConsumableArray(this.getItems()), [item])));
+      sessionStorage.setItem('count', Number(this.count) + 1);
+      this.$counter.textContent = sessionStorage.getItem('count');
+      console.log(this.getItems());
+    } else {
+      alert("".concat(this.component.trim(), " \u0443\u0436\u0435 \u043B\u0435\u0436\u0438\u0442 \u0432 \u0441\u0431\u043E\u0440\u0449\u0438\u043A\u0435"));
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (collectorStore);
 
 /***/ }),
 

@@ -15,8 +15,8 @@ class Catalog {
             getComponents: this.getComponents
         }
         this.cards = new Cards(this.cardsOptions)
-        this.search()
         this.getComponents()
+        this.search()
     }
 
     getComponents(show = this.showComponents, search = null) {
@@ -25,7 +25,7 @@ class Catalog {
         body.append('component', getParamURL('component'))
         body.append('limit', show)
         if (search) {
-            body.append('filter', search)
+            body.append('search', search)
         }
 
         this.preloader(true)
@@ -39,7 +39,7 @@ class Catalog {
                 setTimeout(() => {
                     this.preloader(false)
 
-                    console.log(data);
+                    // console.log(data);
 
                     this.cards = new Cards({
                         ...this.cardsOptions,
@@ -70,32 +70,34 @@ class Catalog {
     }
 
     search() {
-        this.$formSearch = document.querySelector('#search');
-        this.$search = this.$formSearch.querySelector('.search__input');
-        this.$activeMenuLink = document.querySelector('.menu__link_active')
-        const placeholder = this.$activeMenuLink.dataset['genetive']
-        this.$search.setAttribute('placeholder', `Найти ${placeholder}...`)
-        
-        this.$formSearch.addEventListener('submit', (event) => {
-            event.preventDefault()
-            const val = this.$search.value
-            if (val !== '') {
-                const str = val.replace(/[^a-zа-я0-9\s]/gi, "")
-                if (str.length > 1) {
-                    this.getComponents(null, str)
-                } else {
-                    alert('Ваш запрос содержит менее 2 символов.')
-                    return
+        if (document.querySelector('.menu__link_active')) {
+            this.$formSearch = document.querySelector('#search');
+            this.$search = this.$formSearch.querySelector('.search__input');
+            this.$activeMenuLink = document.querySelector('.menu__link_active')
+            const placeholder = this.$activeMenuLink.dataset['genetive']
+            this.$search.setAttribute('placeholder', `Найти ${placeholder}...`)
+            
+            this.$formSearch.addEventListener('submit', (event) => {
+                event.preventDefault()
+                const val = this.$search.value
+                if (val !== '') {
+                    const str = val.replace(/[^a-zа-я0-9\s]/gi, "")
+                    if (str.length > 1) {
+                        this.getComponents(null, str)
+                    } else {
+                        alert('Ваш запрос содержит менее 2 символов.')
+                        return
+                    }
+                } 
+            })
+            
+            this.$search.addEventListener('input', (event) => {
+                const val = event.target.value
+                if (val === '') {
+                    this.getComponents()
                 }
-            } 
-        })
-        
-        this.$search.addEventListener('input', (event) => {
-            const val = event.target.value
-            if (val === '') {
-                this.getComponents()
-            }
-        })
+            })
+        }
     }
 
     preloader(flag) {
