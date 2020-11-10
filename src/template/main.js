@@ -11772,14 +11772,74 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_store_collector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/store/collector */ "./js/store/collector.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
-var Collector = function Collector() {
-  _classCallCheck(this, Collector);
 
-  this.$counter = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].$counter;
-  this.$counter.textContent = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count;
-};
+var Collector = /*#__PURE__*/function () {
+  function Collector(selector, options) {
+    _classCallCheck(this, Collector);
+
+    this.$collector = document.querySelector(selector);
+    this.$buttonActivate = document.querySelector(options.buttonActivate);
+    this.$counter = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].$counter;
+    this.$counter.textContent = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count;
+    this.flagRender = true;
+    this.click = false;
+    this.addEventListener();
+    this.templateComponents = [{
+      cpu: 'Процессор'
+    }, {
+      motherboard: 'Материнская плата'
+    }, {
+      cooler: 'Кулер'
+    }, {
+      bp: 'Блок питания'
+    }, {
+      videocard: 'Видеокарта'
+    }, {
+      ram: 'Оперативная память'
+    }, {
+      hdd: 'HDD-диск'
+    }, {
+      ssd: 'SSD-диск'
+    }];
+  }
+
+  _createClass(Collector, [{
+    key: "render",
+    value: function render() {
+      if (this.flagRender) {
+        if (_js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count == 0) {
+          alert('Сборщик пуст, положите комплектующие');
+          return;
+        } else {
+          var itemsHTML = this.templateComponents.map(function (el) {
+            return "\n                    <div class=\"collector__item\">\n                        <h3>".concat(el[Object.keys(el)], "</h3>\n                    </div>");
+          }).join('');
+          this.$collector.innerHTML = "\n                <div class=\"collector__inner\">\n                    ".concat(itemsHTML, "\n                </div>\n            ");
+        }
+
+        this.flagRender = false;
+        this.$collector.classList.remove('collector_close');
+        this.$collector.classList.add('collector_open');
+      } else {
+        this.flagRender = true;
+        this.$collector.classList.remove('collector_open');
+        this.$collector.classList.add('collector_close');
+      }
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener() {
+      this.$buttonActivate.addEventListener('click', this.render.bind(this));
+    }
+  }]);
+
+  return Collector;
+}();
 
 /* harmony default export */ __webpack_exports__["default"] = (Collector);
 
@@ -11807,8 +11867,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 
-var Main = function Main() {
-  _classCallCheck(this, Main);
+var App = function App() {
+  _classCallCheck(this, App);
 
   localStorage.setItem('page', '1');
   new _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__["default"]('.cards', {
@@ -11816,7 +11876,9 @@ var Main = function Main() {
     imagesPath: 'images',
     ajaxURL: 'modules/Component.php'
   });
-  new _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__["default"]();
+  new _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__["default"]('.collector', {
+    buttonActivate: '.collector-btn'
+  });
   new _js_Auth_Auth__WEBPACK_IMPORTED_MODULE_2__["default"]('auth', {
     buttonActivate: '.button_auth',
     parent: '.page',
@@ -11827,7 +11889,7 @@ var Main = function Main() {
   });
 };
 
-new Main();
+new App();
 
 /***/ }),
 
@@ -11867,6 +11929,7 @@ var collectorStore = {
     if (!isReorderComponent) {
       sessionStorage.setItem('components', JSON.stringify([].concat(_toConsumableArray(this.getItems()), [item])));
       sessionStorage.setItem('count', Number(this.count) + 1);
+      this.count = sessionStorage.getItem('count');
       this.$counter.textContent = sessionStorage.getItem('count');
       console.log(this.getItems());
     } else {

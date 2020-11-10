@@ -5,7 +5,7 @@ import '@/scss/style.scss'
 import Collector from "@/js/Collector/Collector";
 
 
-class Main {
+class App {
     constructor() {
         localStorage.setItem('page', '1');
 
@@ -15,7 +15,9 @@ class Main {
             ajaxURL: 'modules/Component.php'
         });
 
-        new Collector();
+        new Collector('.collector', {
+            buttonActivate: '.collector-btn',
+        });
 
         new Auth('auth', {
             buttonActivate: '.button_auth',
@@ -33,4 +35,4 @@ class Main {
 
 }
 
-new Main();
+new App();

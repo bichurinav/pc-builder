@@ -15,6 +15,7 @@ const collectorStore = {
         if (!isReorderComponent) {
             sessionStorage.setItem('components', JSON.stringify([...this.getItems(), item]));
             sessionStorage.setItem('count', Number(this.count) + 1)
+            this.count = sessionStorage.getItem('count');
             this.$counter.textContent = sessionStorage.getItem('count')
             console.log(this.getItems())
         } else {
