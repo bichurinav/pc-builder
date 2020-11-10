@@ -11812,16 +11812,26 @@ var Collector = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       if (this.flagRender) {
-        if (_js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count == 0) {
-          alert('Сборщик пуст, положите комплектующие');
-          return;
-        } else {
-          var itemsHTML = this.templateComponents.map(function (el) {
-            return "\n                    <div class=\"collector__item\">\n                        <h3>".concat(el[Object.keys(el)], "</h3>\n                    </div>");
-          }).join('');
-          this.$collector.innerHTML = "\n                <div class=\"collector__inner\">\n                    ".concat(itemsHTML, "\n                </div>\n            ");
-        }
+        var components = this.templateComponents.map(function (el) {
+          var items = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].getItems();
+          var res = items.filter(function (item) {
+            return item.component == Object.keys(el)[0];
+          });
+          el['data'] = res[0];
+          return el;
+        });
+        var itemsHTML = components.map(function (el) {
+          var html = "";
 
+          if (el.data) {
+            html = "\n                        <div class=\"collector__item\n                            collector__item_active\">\n                            <img src=\"".concat(el.data.image, "\" alt=\"\">\n                            <h3>").concat(el.data.name, "</h3>\n                        </div>\n                    ");
+          } else {
+            html = "\n                        <div class=\"collector__item\">\n                            <p>".concat(el[Object.keys(el)[0]], "</p>\n                        </div>\n                    ");
+          }
+
+          return html;
+        }).join('');
+        this.$collector.innerHTML = "\n            <div class=\"collector__inner\">\n                ".concat(itemsHTML, "\n            </div>\n            ");
         this.flagRender = false;
         this.$collector.classList.remove('collector_close');
         this.$collector.classList.add('collector_open');

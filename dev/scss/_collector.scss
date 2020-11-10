@@ -14,21 +14,32 @@
         margin-bottom: 20px;
         width: 100%;
         padding: 10px;
-        box-shadow: 0 2px 3px silver;
+        // box-shadow: 0 2px 3px silver;
         display: flex;
+        justify-content: space-between;
         flex-wrap: wrap;
     }
 
     &__item {
         display: flex;
-        flex-basis: 50%;
+        align-items: center;
+        flex-basis: 49%;
         padding: 5px 10px;
         color: gray;
-        margin-bottom: 5px;
-        background: #fff;
+        min-height: 70px;
+        margin-bottom: 8px;
+        background: transparent;
         border-radius: 8px;
+        border: 1px dashed gray;
+        &_active {
+            color: #222;
+            border: 2px solid $light;
+            background: #fff;
+        }
         img {
             width: 70px;
+            height: auto;
+            margin-right: 10px;
         }
     }
 
