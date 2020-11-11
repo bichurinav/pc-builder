@@ -39,8 +39,6 @@ class Catalog {
                 setTimeout(() => {
                     this.preloader(false)
 
-                    // console.log(data);
-
                     this.cards = new Cards({
                         ...this.cardsOptions,
                         cards: data.items,
@@ -48,13 +46,13 @@ class Catalog {
                         filter: data.filter || false,
                         ajaxURL: this.ajaxURL,
                     })
-                    
+
                     this.cards.render()
 
                     this.cards.on('getComponents',
                         (show) => this.getComponents(show))
 
-                    
+
                     if (!data.filter) {
                         document.body.scrollIntoView(false)
                     }
@@ -76,7 +74,7 @@ class Catalog {
             this.$activeMenuLink = document.querySelector('.menu__link_active')
             const placeholder = this.$activeMenuLink.dataset['genetive']
             this.$search.setAttribute('placeholder', `Найти ${placeholder}...`)
-            
+
             this.$formSearch.addEventListener('submit', (event) => {
                 event.preventDefault()
                 const val = this.$search.value
@@ -88,9 +86,9 @@ class Catalog {
                         alert('Ваш запрос содержит менее 2 символов.')
                         return
                     }
-                } 
+                }
             })
-            
+
             this.$search.addEventListener('input', (event) => {
                 const val = event.target.value
                 if (val === '') {

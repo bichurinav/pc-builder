@@ -6,22 +6,7 @@ class Auth {
         this.action = 'auth';
         this.auth = 'auth';
         this.ajaxURL = options.ajaxURL;
-        this.init();
-    }
-
-    init() {
-        if (this.$buttonActivate) {
-            this.$buttonActivate.addEventListener('click', () => {
-                this.render();
-            })
-            document.body.addEventListener('click', (event) => {
-                const el = event.target;
-                if (el.className === this.selector
-                    || el.className === `button ${this.selector}__close`) {
-                    this.clear();
-                }
-            })
-        }
+        this.listenerBeforeRender()
     }
 
     getTemplate(auth) {
@@ -108,10 +93,25 @@ class Auth {
         this.$auth.classList.add(this.selector)
         this.$auth.innerHTML = this.getTemplate(this.auth)
         this.$parent.insertAdjacentElement('afterBegin', this.$auth)
-        this.addEventListener()
+        this.listenerAfterRender()
     }
 
-    addEventListener() {
+    listenerBeforeRender() {
+        if (this.$buttonActivate) {
+            this.$buttonActivate.addEventListener('click', () => {
+                this.render();
+            })
+            document.body.addEventListener('click', (event) => {
+                const el = event.target;
+                if (el.className === this.selector
+                    || el.className === `button ${this.selector}__close`) {
+                    this.clear();
+                }
+            })
+        }
+    }
+
+    listenerAfterRender() {
         this.$form = document.querySelector(`.${this.selector}__form`)
         this.$login = document.querySelector('input[name="login"]');
         this.$password = document.querySelector('input[name="password"]');
@@ -126,7 +126,7 @@ class Auth {
                 } else {
                     this.auth = btn.dataset['auth']
                     this.$auth.innerHTML = this.getTemplate(this.auth)
-                    this.addEventListener()
+                    this.listenerAfterRender()
                 }
             })
         })

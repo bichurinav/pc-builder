@@ -13,11 +13,11 @@ class PriceChange {
         for (let i = 0; i < this.$prices.length; i++) {
             this.$fields[i].style.display = "inline";
             this.$prices[i].style.display = "none";
-            this.addEventListener(this.$fields[i]);
+            this.listenerFieldPrice(this.$fields[i]);
         }
     }
 
-    addEventListener(field) {
+    listenerFieldPrice(field) {
         field.addEventListener('change', this.changePrice.bind(this))
     }
 

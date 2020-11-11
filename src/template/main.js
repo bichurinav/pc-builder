@@ -10843,6 +10843,11 @@ var Add = /*#__PURE__*/function () {
     key: "uploadImage",
     value: function uploadImage(event) {
       var textSelector = document.querySelector('.upload-file__text');
+
+      if (!textSelector) {
+        throw new Error('.upload-file__text не найден');
+      }
+
       var file = event.target.files[0];
 
       if (file.size > 5 * 1024 * 1024) {
@@ -11015,20 +11020,25 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var Delete = /*#__PURE__*/function () {
   function Delete(selector, ajaxURL) {
-    var _this = this;
-
     _classCallCheck(this, Delete);
 
     this.$delButtons = document.querySelectorAll(selector);
     this.action = 'remove';
     this.ajaxURL = ajaxURL;
-    this.$delButtons.forEach(function (btn) {
-      btn.style.display = 'block';
-      btn.addEventListener('click', _this.delCardFromDB.bind(_this, btn));
-    });
+    this.init();
   }
 
   _createClass(Delete, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      this.$delButtons.forEach(function (btn) {
+        btn.style.display = 'block';
+        btn.addEventListener('click', _this.delCardFromDB.bind(_this, btn));
+      });
+    }
+  }, {
     key: "delCardFromDB",
     value: function delCardFromDB(btn) {
       var cardName = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["findParent"])(btn, 'card').querySelector('.card__title').textContent;
@@ -11097,12 +11107,12 @@ var PriceChange = /*#__PURE__*/function () {
       for (var i = 0; i < this.$prices.length; i++) {
         this.$fields[i].style.display = "inline";
         this.$prices[i].style.display = "none";
-        this.addEventListener(this.$fields[i]);
+        this.listenerFieldPrice(this.$fields[i]);
       }
     }
   }, {
-    key: "addEventListener",
-    value: function addEventListener(field) {
+    key: "listenerFieldPrice",
+    value: function listenerFieldPrice(field) {
       field.addEventListener('change', this.changePrice.bind(this));
     }
   }, {
@@ -11169,12 +11179,30 @@ var Auth = /*#__PURE__*/function () {
     this.action = 'auth';
     this.auth = 'auth';
     this.ajaxURL = options.ajaxURL;
-    this.init();
+    this.listenerBeforeRender();
   }
 
   _createClass(Auth, [{
-    key: "init",
-    value: function init() {
+    key: "getTemplate",
+    value: function getTemplate(auth) {
+      if (auth === 'auth') {
+        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <button class=\"button ").concat(this.selector, "__close\">\n                    \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                </button>\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        login\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth active\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
+      } else {
+        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <button class=\"button ").concat(this.selector, "__close\">\n                        \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                    </button>\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        assignment_ind\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u0432\u0442\u043E\u0440\u043D\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password2\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg active\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.$auth = document.createElement('div');
+      this.$auth.classList.add(this.selector);
+      this.$auth.innerHTML = this.getTemplate(this.auth);
+      this.$parent.insertAdjacentElement('afterBegin', this.$auth);
+      this.listenerAfterRender();
+    }
+  }, {
+    key: "listenerBeforeRender",
+    value: function listenerBeforeRender() {
       var _this = this;
 
       if (this.$buttonActivate) {
@@ -11191,26 +11219,8 @@ var Auth = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "getTemplate",
-    value: function getTemplate(auth) {
-      if (auth === 'auth') {
-        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <button class=\"button ").concat(this.selector, "__close\">\n                    \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                </button>\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        login\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth active\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
-      } else {
-        return "\n            <div class=\"".concat(this.selector, "__form\">\n                <h3 class=\"").concat(this.selector, "__title\">\n                    <button class=\"button ").concat(this.selector, "__close\">\n                        \u0437\u0430\u043A\u0440\u044B\u0442\u044C\n                    </button>\n                    <span class=\"").concat(this.selector, "-icon material-icons\">\n                        assignment_ind\n                    </span>\n                    <span class=\"").concat(this.selector, "-title\">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</span>\n                </h3>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C:</span>\n                    <input name=\"login\" class=\"field__input\" type=\"text\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <label class=\"field rounded\">\n                    <span class=\"field__title\">\u041F\u043E\u0432\u0442\u043E\u0440\u043D\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C:</span>\n                    <input name=\"password2\" class=\"field__input\" type=\"password\">\n                    <span class=\"field__error\"></span>\n                </label>\n                <div class=\"").concat(this.selector, "__error\"></div>\n                <div class=\"").concat(this.selector, "__buttons\">\n                    <button data-auth=\"auth\" class=\"button\n                    ").concat(this.selector, "__btn-auth\">\n                        \u0412\u043E\u0439\u0442\u0438\n                    </button>\n                    <button data-auth=\"reg\" class=\"button\n                    ").concat(this.selector, "__btn-reg active\">\n                        \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F\n                    </button>\n                </div>\n            </div>\n            ");
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      this.$auth = document.createElement('div');
-      this.$auth.classList.add(this.selector);
-      this.$auth.innerHTML = this.getTemplate(this.auth);
-      this.$parent.insertAdjacentElement('afterBegin', this.$auth);
-      this.addEventListener();
-    }
-  }, {
-    key: "addEventListener",
-    value: function addEventListener() {
+    key: "listenerAfterRender",
+    value: function listenerAfterRender() {
       var _this2 = this;
 
       this.$form = document.querySelector(".".concat(this.selector, "__form"));
@@ -11230,7 +11240,7 @@ var Auth = /*#__PURE__*/function () {
             _this2.auth = btn.dataset['auth'];
             _this2.$auth.innerHTML = _this2.getTemplate(_this2.auth);
 
-            _this2.addEventListener();
+            _this2.listenerAfterRender();
           }
         });
       });
@@ -11361,6 +11371,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_Admin_PriceChange__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/js/Admin/PriceChange */ "./js/Admin/PriceChange.js");
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! events */ "../node_modules/events/events.js");
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _js_Catalog_Collector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/js/Catalog/Collector */ "./js/Catalog/Collector.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11382,6 +11393,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -11422,7 +11434,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
       var _this2 = this;
 
       if (Array.isArray(this.components)) {
-        this.componentsHTML = this.components.map(function (component, index) {
+        this.componentsHTML = this.components.map(function (component) {
           var params = JSON.parse(component['params']);
           var $params = [];
 
@@ -11445,7 +11457,7 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
         moreButtons.forEach(function (btn) {
           btn.textContent = screen.width < 425 ? 'Характеристики' : 'Все характеристики';
         });
-      }); // addEventListener - properties
+      }); // properties action
 
       this.btnsProps = document.querySelectorAll('.card__btn-more');
       this.btnsProps.forEach(function (btn) {
@@ -11455,8 +11467,12 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
       if (document.querySelector('.admin-panel')) {
         new _js_Admin_Delete__WEBPACK_IMPORTED_MODULE_3__["default"]('.card__del', this.ajaxURL);
         new _js_Admin_PriceChange__WEBPACK_IMPORTED_MODULE_4__["default"]('.card__changePrice', '.card__price span', this.ajaxURL);
-      }
+      } //collector action
 
+
+      this.collector = new _js_Catalog_Collector__WEBPACK_IMPORTED_MODULE_6__["default"]('.collector', {
+        buttonActivate: '.collector-btn'
+      });
       this.collectorAction();
 
       if (!this.filter) {
@@ -11481,9 +11497,16 @@ var Cards = /*#__PURE__*/function (_EventEmitter) {
 
           var component = _this3.components.filter(function (el) {
             return el.name === name;
-          })[0];
+          })[0]; // object
+
 
           _js_store_collector__WEBPACK_IMPORTED_MODULE_1__["default"].addItem(component);
+
+          if (!_this3.collector.flagRender) {
+            _this3.collector.flagRender = true;
+
+            _this3.collector.render();
+          }
         });
       });
     }
@@ -11583,8 +11606,7 @@ var Catalog = /*#__PURE__*/function () {
         return data.json();
       }).then(function (data) {
         setTimeout(function () {
-          _this.preloader(false); // console.log(data);
-
+          _this.preloader(false);
 
           _this.cards = new _js_Catalog_Cards__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread(_objectSpread({}, _this.cardsOptions), {}, {
             cards: data.items,
@@ -11659,6 +11681,126 @@ var Catalog = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Catalog);
+
+/***/ }),
+
+/***/ "./js/Catalog/Collector.js":
+/*!*********************************!*\
+  !*** ./js/Catalog/Collector.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _js_store_collector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/store/collector */ "./js/store/collector.js");
+/* harmony import */ var _js_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/utils */ "./js/utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+var Collector = /*#__PURE__*/function () {
+  function Collector(selector, options) {
+    _classCallCheck(this, Collector);
+
+    this.$collector = document.querySelector(selector);
+    this.$buttonActivate = document.querySelector(options.buttonActivate);
+    this.$counter = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].$counter;
+    this.$counter.textContent = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count;
+    this.flagRender = true;
+    this.buttonCollectorListener();
+    this.templateComponents = [{
+      cpu: 'Процессор'
+    }, {
+      motherboard: 'Материнская плата'
+    }, {
+      cooler: 'Кулер'
+    }, {
+      bp: 'Блок питания'
+    }, {
+      videocard: 'Видеокарта'
+    }, {
+      ram: 'Оперативная память'
+    }, {
+      hdd: 'HDD-диск'
+    }, {
+      ssd: 'SSD-диск'
+    }];
+  }
+
+  _createClass(Collector, [{
+    key: "render",
+    value: function render() {
+      if (this.flagRender) {
+        var components = this.templateComponents.map(function (el) {
+          var items = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].getItems();
+          var res = items.filter(function (item) {
+            return item.component == Object.keys(el)[0];
+          });
+          el['data'] = res[0];
+          return el;
+        });
+        var itemsHTML = components.map(function (el) {
+          var html = "";
+
+          if (el['data']) {
+            html = "\n                        <div class=\"collector__item collector__item_active\"\n                          data-component=\"".concat(el['data'].component, "\">\n                            <img src=\"").concat(el['data'].image, "\" alt=\"\">\n                            <h3>").concat(el['data'].name, "</h3>\n                            <button class=\"button collector__btn-del\">\n                                <span class=\"material-icons\">\n                                    remove_circle_outline\n                                </span>\n                            </button>\n                        </div>\n                    ");
+          } else {
+            html = "\n                        <div class=\"collector__item\">\n                            <p>".concat(el[Object.keys(el)[0]], "</p>\n                        </div>\n                    ");
+          }
+
+          return html;
+        }).join('');
+        this.$collector.innerHTML = "\n            <div class=\"collector__inner\">\n                ".concat(itemsHTML, "\n            </div>\n            ");
+        this.flagRender = false;
+        this.$collector.classList.remove('collector_close');
+        this.$collector.classList.add('collector_open');
+        this.listenersAfterRender();
+      } else {
+        this.flagRender = true;
+        this.$collector.classList.remove('collector_open');
+        this.$collector.classList.add('collector_close');
+      }
+    }
+  }, {
+    key: "removeComponent",
+    value: function removeComponent(event) {
+      var item = Object(_js_utils__WEBPACK_IMPORTED_MODULE_1__["findParent"])(event.target, 'collector__item');
+      _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].removeItem(item.dataset['component']);
+      this.flagRender = true;
+      this.render();
+    }
+  }, {
+    key: "buttonCollectorListener",
+    value: function buttonCollectorListener() {
+      this.$buttonActivate.addEventListener('click', this.render.bind(this));
+    }
+  }, {
+    key: "listenersAfterRender",
+    value: function listenersAfterRender() {
+      var _this = this;
+
+      var delButtons = document.querySelectorAll('.collector__btn-del');
+
+      if (!delButtons.length) {
+        throw new Error('.collector__btn-del не найдены');
+      }
+
+      delButtons.forEach(function (btn) {
+        btn.addEventListener('click', _this.removeComponent.bind(_this));
+      });
+    }
+  }]);
+
+  return Collector;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Collector);
 
 /***/ }),
 
@@ -11760,101 +11902,6 @@ var Pagination = /*#__PURE__*/function (_EventEmitter) {
 
 /***/ }),
 
-/***/ "./js/Collector/Collector.js":
-/*!***********************************!*\
-  !*** ./js/Collector/Collector.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _js_store_collector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/js/store/collector */ "./js/store/collector.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var Collector = /*#__PURE__*/function () {
-  function Collector(selector, options) {
-    _classCallCheck(this, Collector);
-
-    this.$collector = document.querySelector(selector);
-    this.$buttonActivate = document.querySelector(options.buttonActivate);
-    this.$counter = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].$counter;
-    this.$counter.textContent = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].count;
-    this.flagRender = true;
-    this.click = false;
-    this.addEventListener();
-    this.templateComponents = [{
-      cpu: 'Процессор'
-    }, {
-      motherboard: 'Материнская плата'
-    }, {
-      cooler: 'Кулер'
-    }, {
-      bp: 'Блок питания'
-    }, {
-      videocard: 'Видеокарта'
-    }, {
-      ram: 'Оперативная память'
-    }, {
-      hdd: 'HDD-диск'
-    }, {
-      ssd: 'SSD-диск'
-    }];
-  }
-
-  _createClass(Collector, [{
-    key: "render",
-    value: function render() {
-      if (this.flagRender) {
-        var components = this.templateComponents.map(function (el) {
-          var items = _js_store_collector__WEBPACK_IMPORTED_MODULE_0__["default"].getItems();
-          var res = items.filter(function (item) {
-            return item.component == Object.keys(el)[0];
-          });
-          el['data'] = res[0];
-          return el;
-        });
-        var itemsHTML = components.map(function (el) {
-          var html = "";
-
-          if (el.data) {
-            html = "\n                        <div class=\"collector__item\n                            collector__item_active\">\n                            <img src=\"".concat(el.data.image, "\" alt=\"\">\n                            <h3>").concat(el.data.name, "</h3>\n                        </div>\n                    ");
-          } else {
-            html = "\n                        <div class=\"collector__item\">\n                            <p>".concat(el[Object.keys(el)[0]], "</p>\n                        </div>\n                    ");
-          }
-
-          return html;
-        }).join('');
-        this.$collector.innerHTML = "\n            <div class=\"collector__inner\">\n                ".concat(itemsHTML, "\n            </div>\n            ");
-        this.flagRender = false;
-        this.$collector.classList.remove('collector_close');
-        this.$collector.classList.add('collector_open');
-      } else {
-        this.flagRender = true;
-        this.$collector.classList.remove('collector_open');
-        this.$collector.classList.add('collector_close');
-      }
-    }
-  }, {
-    key: "addEventListener",
-    value: function addEventListener() {
-      this.$buttonActivate.addEventListener('click', this.render.bind(this));
-    }
-  }]);
-
-  return Collector;
-}();
-
-/* harmony default export */ __webpack_exports__["default"] = (Collector);
-
-/***/ }),
-
 /***/ "./js/index.js":
 /*!*********************!*\
   !*** ./js/index.js ***!
@@ -11868,9 +11915,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_Catalog_Catalog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/js/Catalog/Catalog */ "./js/Catalog/Catalog.js");
 /* harmony import */ var _js_Auth_Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/js/Auth/Auth */ "./js/Auth/Auth.js");
 /* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/scss/style.scss */ "./scss/style.scss");
-/* harmony import */ var _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/js/Collector/Collector */ "./js/Collector/Collector.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 
 
 
@@ -11885,9 +11930,6 @@ var App = function App() {
     showComponents: 6,
     imagesPath: 'images',
     ajaxURL: 'modules/Component.php'
-  });
-  new _js_Collector_Collector__WEBPACK_IMPORTED_MODULE_4__["default"]('.collector', {
-    buttonActivate: '.collector-btn'
   });
   new _js_Auth_Auth__WEBPACK_IMPORTED_MODULE_2__["default"]('auth', {
     buttonActivate: '.button_auth',
@@ -11945,6 +11987,15 @@ var collectorStore = {
     } else {
       alert("".concat(this.component.trim(), " \u0443\u0436\u0435 \u043B\u0435\u0436\u0438\u0442 \u0432 \u0441\u0431\u043E\u0440\u0449\u0438\u043A\u0435"));
     }
+  },
+  removeItem: function removeItem(item) {
+    var updatedItems = this.getItems().filter(function (el) {
+      return el.component !== item;
+    });
+    sessionStorage.setItem('components', JSON.stringify(updatedItems));
+    sessionStorage.setItem('count', Number(this.count) - 1);
+    this.count = sessionStorage.getItem('count');
+    this.$counter.textContent = sessionStorage.getItem('count');
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (collectorStore);

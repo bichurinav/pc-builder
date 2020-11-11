@@ -5,6 +5,10 @@ class Delete {
         this.$delButtons = document.querySelectorAll(selector)
         this.action = 'remove'
         this.ajaxURL = ajaxURL
+        this.init()
+    }
+
+    init() {
         this.$delButtons.forEach(btn => {
             btn.style.display = 'block'
             btn.addEventListener('click', this.delCardFromDB.bind(this, btn))

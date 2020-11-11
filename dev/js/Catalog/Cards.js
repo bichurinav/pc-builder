@@ -4,6 +4,7 @@ import Pagination from "@/js/Catalog/Pagination";
 import Delete from "@/js/Admin/Delete";
 import PriceChange from "@/js/Admin/PriceChange";
 import EventEmitter from 'events'
+import Collector from "@/js/Catalog/Collector";
 
 class Cards extends EventEmitter {
     constructor(options) {
@@ -24,15 +25,15 @@ class Cards extends EventEmitter {
 
     render() {
         if (Array.isArray(this.components)) {
-            this.componentsHTML = this.components.map((component, index) => {
+            this.componentsHTML = this.components.map((component) => {
                 const params = JSON.parse(component['params']);
 
                 let $params = []
                 for (let key in params) {
                     $params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${params[key]}</div>`);
                 }
-
                 const previewParams = $params.filter((el, i) => i <= 2)
+
                 return `
                 <div class="card catalog-content__item">
                     <div class="card__img">
@@ -73,7 +74,6 @@ class Cards extends EventEmitter {
             this.componentsHTML = `<h2>Пусто :(</h2>`
         }
 
-
         this.$catalog.insertAdjacentHTML('afterbegin', `
             <div class="catalog-content-items">
                  ${this.componentsHTML}
@@ -87,7 +87,7 @@ class Cards extends EventEmitter {
             })
         })
 
-        // addEventListener - properties
+        // properties action
         this.btnsProps = document.querySelectorAll('.card__btn-more');
         this.btnsProps.forEach(btn => {
             btn.addEventListener('click', this.showProps.bind(this))
@@ -100,6 +100,10 @@ class Cards extends EventEmitter {
                 '.card__price span', this.ajaxURL);
         }
 
+        //collector action
+        this.collector = new Collector('.collector', {
+            buttonActivate: '.collector-btn',
+        });
         this.collectorAction()
 
         if (!this.filter) {
@@ -117,8 +121,12 @@ class Cards extends EventEmitter {
             btn.addEventListener('click', () => {
                 const parent = findParent(btn, 'card');
                 const name = parent.querySelector('.card__title').textContent;
-                const component = this.components.filter(el => el.name === name)[0]
+                const component = this.components.filter(el => el.name === name)[0] // object
                 collectorStore.addItem(component)
+                if (!this.collector.flagRender) {
+                    this.collector.flagRender = true;
+                    this.collector.render()
+                }
             })
         })
     }
@@ -136,7 +144,6 @@ class Cards extends EventEmitter {
             blockProps.style.display = "none";
         }
     }
-
 
 }
 

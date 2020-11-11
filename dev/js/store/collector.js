@@ -21,6 +21,16 @@ const collectorStore = {
         } else {
             alert(`${this.component.trim()} уже лежит в сборщике`)
         }
+    },
+
+    removeItem(item) {
+        const updatedItems = this.getItems().filter(el => {
+            return el.component !== item
+        })
+        sessionStorage.setItem('components', JSON.stringify(updatedItems));
+        sessionStorage.setItem('count', Number(this.count) - 1)
+        this.count = sessionStorage.getItem('count');
+        this.$counter.textContent = sessionStorage.getItem('count')
     }
 
 }

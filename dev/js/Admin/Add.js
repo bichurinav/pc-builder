@@ -55,6 +55,9 @@ class Add {
 
     uploadImage(event) {
         let textSelector = document.querySelector('.upload-file__text');
+        if (!textSelector) {
+            throw new Error('.upload-file__text не найден')
+        }
         let file = event.target.files[0];
         if (file.size > 5 * 1024 * 1024) {
             textSelector.textContent = 'Изображение не более 5 МБ.';
@@ -66,7 +69,6 @@ class Add {
     addComponentInDB(event) {
         event.preventDefault();
         if (this.isFormValid(this.fields)) {
-
             // формируем данные для отправки
             let body = new FormData(event.target);
             body.append('action', this.action);

@@ -19,7 +19,7 @@
         </button>
 
         <button class="button button_icon collector-btn">
-            <span class="collector-btn__count">0</span>
+            <span class="collector-btn__count"></span>
             <span class="collector-btn__title">Сборщик</span>
             <img class="collector-btn__img" src="./images/box.svg" alt="">
         </button>

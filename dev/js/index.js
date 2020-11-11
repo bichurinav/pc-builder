@@ -2,7 +2,6 @@ import Admin from './Admin/Admin'
 import Catalog from '@/js/Catalog/Catalog'
 import Auth from '@/js/Auth/Auth'
 import '@/scss/style.scss'
-import Collector from "@/js/Collector/Collector";
 
 
 class App {
@@ -13,10 +12,6 @@ class App {
             showComponents: 6,
             imagesPath: 'images',
             ajaxURL: 'modules/Component.php'
-        });
-
-        new Collector('.collector', {
-            buttonActivate: '.collector-btn',
         });
 
         new Auth('auth', {
