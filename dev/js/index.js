@@ -3,7 +3,6 @@ import Catalog from '@/js/Catalog/Catalog'
 import Auth from '@/js/Auth/Auth'
 import '@/scss/style.scss'
 
-
 class App {
     constructor() {
         localStorage.setItem('page', '1');
@@ -23,11 +22,7 @@ class App {
         new Admin('.admin-panel', {
             ajaxURL: '../modules/Component.php'
         });
-
     }
-
-
-
 }
 
 new App();

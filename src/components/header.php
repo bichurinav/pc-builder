@@ -6,10 +6,17 @@
     <link rel="stylesheet" href="./template/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
           rel="stylesheet">
+    <script>
+        // FOR IE
+        var ua = window.navigator.userAgent.toLowerCase()
+        var isIE = (/trident/gi).test(ua) || (/msie/gi).test(ua)
+        if (isIE) {
+            window.location.href = 'http://bestvpn.org/outdatedbrowser/ru'
+        }
+    </script>
     <title>Document</title>
 </head>
 <body>
-
         <!-- catalog-menu -->
         <?
             if ($_SESSION['login'] === 'admin') {
@@ -24,7 +31,7 @@
                             <img src="./images/logo.svg" alt="" class="logo__img">
                         </a>
                         <?if ($_SESSION['admin']):?>
-                            <a href="/exit.php" class="header__btn-exit">  
+                            <a href="/exit.php" class="header__btn-exit">
                                 <span class="auth-icon material-icons">
                                     directions_run
                                 </span>
