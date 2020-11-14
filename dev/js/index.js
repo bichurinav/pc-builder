@@ -1,7 +1,7 @@
-import Admin from './Admin/Admin'
-import Catalog from '@/js/Catalog/Catalog'
-import Auth from '@/js/Auth/Auth'
-import '@/scss/style.scss'
+import Admin from './Admin/Admin';
+import Catalog from '@/js/Catalog/Catalog';
+import Auth from '@/js/Auth/Auth';
+import '@/scss/style.scss';
 
 class App {
     constructor() {

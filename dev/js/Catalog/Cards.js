@@ -1,21 +1,21 @@
-import {findParent, changeFormatPrice} from "@/js/utils";
-import collectorStore from "@/js/store/collector";
-import Pagination from "@/js/Catalog/Pagination";
-import Delete from "@/js/Admin/Delete";
-import PriceChange from "@/js/Admin/PriceChange";
+import {findParent, changeFormatPrice} from '@/js/utils';
+import collectorStore from '@/js/store/collector';
+import Pagination from '@/js/Catalog/Pagination';
+import Delete from '@/js/Admin/Delete';
+import PriceChange from '@/js/Admin/PriceChange';
 import EventEmitter from 'events'
-import Collector from "@/js/Catalog/Collector";
+import Collector from '@/js/Catalog/Collector';
 
 class Cards extends EventEmitter {
     constructor(options) {
-        super()
-        this.$catalog = options.catalog
-        this.components = options.cards
-        this.count = options.count
-        this.show = options.show
-        this.imagesPath = options.imagesPath
-        this.ajaxURL = options.ajaxURL
-        this.filter = options.filter
+        super();
+        this.$catalog = options.catalog;
+        this.components = options.cards;
+        this.count = options.count;
+        this.show = options.show;
+        this.imagesPath = options.imagesPath;
+        this.ajaxURL = options.ajaxURL;
+        this.filter = options.filter;
         this.pagination = new Pagination({
             count: this.count,
             show: this.show,
@@ -28,7 +28,7 @@ class Cards extends EventEmitter {
             this.componentsHTML = this.components.map((component) => {
                 const params = JSON.parse(component['params']);
 
-                let $params = []
+                let $params = [];
                 for (let key in params) {
                     $params.push(`<div class="card__prop"><b>${key.replaceAll('_', ' ')}</b>: ${params[key]}</div>`);
                 }
@@ -90,7 +90,7 @@ class Cards extends EventEmitter {
         // properties action
         this.btnsProps = document.querySelectorAll('.card__btn-more');
         this.btnsProps.forEach(btn => {
-            btn.addEventListener('click', this.showProps.bind(this))
+            btn.addEventListener('click', this.showProps.bind(this));
         })
 
         // admin action
@@ -104,12 +104,12 @@ class Cards extends EventEmitter {
         this.collector = new Collector('.collector', {
             buttonActivate: '.collector-btn',
         });
-        this.collectorAction()
+        this.collectorAction();
 
         if (!this.filter) {
             if (this.count > this.show) {
-                this.pagination.render()
-                this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset))
+                this.pagination.render();
+                this.pagination.on('getComponents', (offset) => this.emit('getComponents', offset));
             }
         }
 
@@ -122,21 +122,21 @@ class Cards extends EventEmitter {
                 const parent = findParent(btn, 'card');
                 const name = parent.querySelector('.card__title').textContent;
                 const component = this.components.filter(el => el.name === name)[0] // object
-                collectorStore.addItem(component)
+                collectorStore.addItem(component);
                 if (!this.collector.flagRender) {
                     this.collector.flagRender = true;
-                    this.collector.render()
+                    this.collector.render();
                 }
             })
         })
     }
 
     showProps(event) {
-        const btn = event.target
+        const btn = event.target;
         const blockProps = findParent(btn, 'card').querySelector('.card__props');
         blockProps.style.display = "flex";
         const card = findParent(blockProps, 'catalog-content__item');
-        card.addEventListener('click', this.closeProps.bind(this, blockProps))
+        card.addEventListener('click', this.closeProps.bind(this, blockProps));
     }
 
     closeProps(blockProps, event) {

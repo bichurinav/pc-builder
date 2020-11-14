@@ -10,16 +10,16 @@ const collectorStore = {
     addItem(item) {
         const isReorderComponent = this.getItems().filter(el => {
             return el.component === item.component
-        }).length
+        }).length;
 
         if (!isReorderComponent) {
             sessionStorage.setItem('components', JSON.stringify([...this.getItems(), item]));
-            sessionStorage.setItem('count', Number(this.count) + 1)
+            sessionStorage.setItem('count', (Number(this.count) + 1).toString())
             this.count = sessionStorage.getItem('count');
-            this.$counter.textContent = sessionStorage.getItem('count')
+            this.$counter.textContent = sessionStorage.getItem('count');
             console.log(this.getItems())
         } else {
-            alert(`${this.component.trim()} уже лежит в сборщике`)
+            alert(`${this.component.trim()} уже лежит в сборщике`);
         }
     },
 
@@ -28,11 +28,11 @@ const collectorStore = {
             return el.component !== item
         })
         sessionStorage.setItem('components', JSON.stringify(updatedItems));
-        sessionStorage.setItem('count', Number(this.count) - 1)
+        sessionStorage.setItem('count', (this.count - 1).toString());
         this.count = sessionStorage.getItem('count');
-        this.$counter.textContent = sessionStorage.getItem('count')
+        this.$counter.textContent = sessionStorage.getItem('count');
     }
 
-}
+};
 
-export default collectorStore
+export default collectorStore;

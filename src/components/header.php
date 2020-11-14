@@ -8,8 +8,8 @@
           rel="stylesheet">
     <script>
         // FOR IE
-        var ua = window.navigator.userAgent.toLowerCase()
-        var isIE = (/trident/gi).test(ua) || (/msie/gi).test(ua)
+        var browser = window.navigator.userAgent.toLowerCase()
+        var isIE = (/trident/gi).test(browser) || (/msie/gi).test(browser)
         if (isIE) {
             window.location.href = 'http://bestvpn.org/outdatedbrowser/ru'
         }

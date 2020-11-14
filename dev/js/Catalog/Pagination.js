@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 
 class Pagination extends EventEmitter {
     constructor(options) {
-        super()
+        super();
         this.count = options.count;
         this.show = options.show;
         this.$catalog = options.catalog;
@@ -36,17 +36,17 @@ class Pagination extends EventEmitter {
     }
 
     getComponents() {
-        this.limit = this.page === 1 ? this.show : this.page * this.show
-        this.emit('getComponents', this.limit)
+        this.limit = this.page === 1 ? this.show : this.page * this.show;
+        this.emit('getComponents', this.limit);
     }
 
     changePage() {
         if (localStorage.getItem('page') < this.getLastPage()) {
-            this.page = Number(localStorage.getItem('page')) + 1
-            localStorage.setItem('page', this.page)
+            this.page = Number(localStorage.getItem('page')) + 1;
+            localStorage.setItem('page', this.page);
         } else {
-            this.page = 1
-            localStorage.setItem('page', this.page)
+            this.page = 1;
+            localStorage.setItem('page', this.page);
         }
         this.getComponents()
     }

@@ -1,13 +1,14 @@
-import Cards from "@/js/Catalog/Cards";
-import {getParamURL} from "@/js/utils";
+import Cards from '@/js/Catalog/Cards';
+import {getParamURL} from '@/js/utils';
+import axios from 'axios';
 
 class Catalog {
     constructor(selector, options) {
-        this.$el = document.querySelector(selector)
-        this.ajaxURL = options.ajaxURL
-        this.showComponents = options.showComponents
-        this.imagesPath = options.imagesPath
-        this.delayData = 200
+        this.$el = document.querySelector(selector);
+        this.ajaxURL = options.ajaxURL;
+        this.showComponents = options.showComponents;
+        this.imagesPath = options.imagesPath;
+        this.delayData = 200;
         this.cardsOptions = {
             catalog: this.$el,
             imagesPath: this.imagesPath,
@@ -30,12 +31,9 @@ class Catalog {
 
         this.preloader(true)
 
-        const req = fetch(this.ajaxURL, {
-            method: 'POST',
-            body
-        })
-        req.then(data => data.json())
-            .then(data => {
+        axios.post(this.ajaxURL, body)
+            .then((response) => {
+                const data = response.data
                 setTimeout(() => {
                     this.preloader(false)
 
@@ -52,11 +50,9 @@ class Catalog {
                     this.cards.on('getComponents',
                         (show) => this.getComponents(show))
 
-
                     if (!data.filter) {
                         document.body.scrollIntoView(false)
                     }
-
 
                 }, this.delayData)
             })
@@ -64,7 +60,6 @@ class Catalog {
                 this.preloader(false)
                 this.cards.render()
             })
-
     }
 
     search() {

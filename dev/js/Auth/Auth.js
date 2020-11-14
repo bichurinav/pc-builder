@@ -1,12 +1,14 @@
+import axios from 'axios';
+
 class Auth {
     constructor(selector, options) {
-        this.selector = selector
-        this.$parent = document.querySelector(options.parent)
+        this.selector = selector;
+        this.$parent = document.querySelector(options.parent);
         this.$buttonActivate = document.querySelector(options.buttonActivate);
         this.action = 'auth';
         this.auth = 'auth';
         this.ajaxURL = options.ajaxURL;
-        this.listenerBeforeRender()
+        this.listenerBeforeRender();
     }
 
     getTemplate(auth) {
@@ -112,21 +114,21 @@ class Auth {
     }
 
     listenerAfterRender() {
-        this.$form = document.querySelector(`.${this.selector}__form`)
+        this.$form = document.querySelector(`.${this.selector}__form`);
         this.$login = document.querySelector('input[name="login"]');
         this.$password = document.querySelector('input[name="password"]');
         if (this.auth === 'reg') {
-            this.$password2 = document.querySelector('input[name="password2"]')
+            this.$password2 = document.querySelector('input[name="password2"]');
         }
         this.$buttonsAuth = document.querySelectorAll(`.${this.selector}__buttons button`);
         this.$buttonsAuth.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (this.auth === btn.dataset['auth']) {
+                if (this.auth === btn.dataset['auth']) {;
                     if (this.isValid()) this.ajaxAuth(this.auth)
                 } else {
-                    this.auth = btn.dataset['auth']
-                    this.$auth.innerHTML = this.getTemplate(this.auth)
-                    this.listenerAfterRender()
+                    this.auth = btn.dataset['auth'];
+                    this.$auth.innerHTML = this.getTemplate(this.auth);
+                    this.listenerAfterRender();
                 }
             })
         })
@@ -136,96 +138,91 @@ class Auth {
         const invalid = [];
         const inputs = this.$form.querySelectorAll('input');
         inputs.forEach(input => {
-            const errorEl = input.nextElementSibling
+            const errorEl = input.nextElementSibling;
             function clearError() {
-                errorEl.style.display = 'none'
-                errorEl.textContent = ''
+                errorEl.style.display = 'none';
+                errorEl.textContent = '';
             }
 
             if (input.value === '') {
-                errorEl.style.display = 'block'
-                errorEl.textContent = 'Введите значение'
-                invalid.push(input)
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Введите значение';
+                invalid.push(input);
             }
             else {
                 clearError()
                 if (input.name === 'login') {
                     if (input.value.length < 3 || input.value.length > 11) {
-                        errorEl.style.display = 'block'
-                        errorEl.textContent = 'От 3 до 11 символов'
-                        invalid.push(input)
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = 'От 3 до 11 символов';
+                        invalid.push(input);
                     } else if (!/^[a-z]+([-_]?[a-z0-9]+){0,2}$/i.test(input.value)) {
-                        errorEl.style.display = 'block'
-                        errorEl.textContent = 'Недопустимый формат'
-                        invalid.push(input)
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = 'Недопустимый формат';
+                        invalid.push(input);
                     }
                     else {
-                        clearError()
+                        clearError();
                     }
                 }
                 if (input.name === 'password') {
                     if (input.value.length < 4 || input.value.length > 20) {
-                        errorEl.style.display = 'block'
-                        errorEl.textContent = 'От 4 до 20 символов'
-                        invalid.push(input)
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = 'От 4 до 20 символов';
+                        invalid.push(input);
                     } else if (/[<>()[]]/i.test(input.value)) {
-                        errorEl.style.display = 'block'
-                        errorEl.textContent = 'Недопустимый формат'
-                        invalid.push(input)
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = 'Недопустимый формат';
+                        invalid.push(input);
                     } else {
-                        clearError()
+                        clearError();
                     }
                 }
 
                 if (input.name === 'password2') {
                     if (input.value !== this.$password.value) {
-                        errorEl.style.display = 'block'
-                        errorEl.textContent = 'Не совпадает'
-                        invalid.push(input)
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = 'Не совпадает';
+                        invalid.push(input);
                     } else {
-                        clearError()
+                        clearError();
                     }
                 }
             }
         })
 
-        return !invalid.length
+        return !invalid.length;
     }
 
     ajaxAuth(auth) {
-        let body = new FormData()
-        body.append('action', this.action)
-        body.append('type', this.auth)
-        body.append('login', this.$login.value)
-        body.append('password', this.$password.value)
+        let body = new FormData();
+        body.append('action', this.action);
+        body.append('type', this.auth);
+        body.append('login', this.$login.value);
+        body.append('password', this.$password.value);
         if (this.$password2) {
             body.append('password2', this.$password2.value)
         }
 
-        const req = fetch(this.ajaxURL, {
-            method: 'POST',
-            body
-        })
-
-        req.then(data => data.text())
-            .then(data => {
+        axios.post(this.ajaxURL, body)
+            .then((response) => {
+                const data = response.data;
                 if (data === 'auth') {
                     document.location.href = `/`;
                 } else {
-                    const $authError =
-                    document.querySelector(`.${this.selector}__error`)
+                    const $authError = document.querySelector(`.${this.selector}__error`);
                     $authError.textContent = data;
                 }
             })
+            .catch((error) => {
+                console.log(error);
+            })
 
-        req.catch(err => {
-            console.log(err)
-        })
     }
 
     clear() {
-        this.$auth.remove()
+        this.$auth.remove();
     }
 }
 
-export default Auth
+export default Auth;
